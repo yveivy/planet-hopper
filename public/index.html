@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Simple Canvas Game</title>
+        <style>
+            body { background: #ddd; }
+            #gameCanvas { background: #fff; }
+            #inputForm {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                background: #ccc;
+                padding: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div id="inputForm" style="display: none;">
+            <form id="form">
+                <label for="input">Enter command:</label>
+                <input type="text" id="input" name="input" required>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+        <script src="js/gameboard.js"></script>
+    </body>
+</html>
