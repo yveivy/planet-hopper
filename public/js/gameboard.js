@@ -6,9 +6,19 @@ const ctx = canvas.getContext('2d');
 const sprite = {
     x: canvas.width / 2, // Initial position
     y: canvas.height / 2, // Initial position
-    speed: 5, // Speed of movement
-    width: 50, // sprite size
-    height: 50, // sprite size
+    speed: 3, // Speed of movement
+    width: 16, // sprite size
+    height: 32, // sprite size
+};
+
+// Create Image object
+const image = new Image();
+image.src = '../assets/linkGuy.png';
+
+// Handle image load event
+image.onload = function () {
+    // Draw sprite
+    ctx.drawImage(image, sprite.x, sprite.y, sprite.width, sprite.height);
 };
 
 // Handle keyboard input
@@ -65,11 +75,22 @@ function gameLoop() {
     if (keys.d) sprite.x += sprite.speed;
 
     // Draw sprite
-    ctx.fillRect(sprite.x, sprite.y, sprite.width, sprite.height);
+    ctx.drawImage(image, sprite.x, sprite.y, sprite.width, sprite.height);
 
     // Call the next game loop
     requestAnimationFrame(gameLoop);
 }
+
+window.addEventListener('keydown', function (event) {
+    if (event.key === 'e' || event.key === 'e') {
+    let inventoryContainer = document.getElementById('inventoryContainer');
+    if (inventoryContainer.style.display === 'none') {
+        inventoryContainer.style.display = 'block';
+    } else {
+        inventoryContainer.style.display = 'none';
+    }
+}
+});
 
 // Start the game loop
 gameLoop();
