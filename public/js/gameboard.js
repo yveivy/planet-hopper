@@ -2,6 +2,9 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+//setting up the background
+const backgroundImage = new Image();
+backgroundImage.src = './images/gameLayers/mainForeground.png';
 // Set up sprite
 const sprite = {
     x: canvas.width / 2, // Initial position
@@ -57,7 +60,8 @@ window.addEventListener('keyup', function(event) {
 function gameLoop() {
     // Clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+//push in the canvas 
+ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
     // Update sprite position based on keys
     if (keys.w) sprite.y -= sprite.speed;
     if (keys.a) sprite.x -= sprite.speed;
