@@ -8,7 +8,7 @@ backgroundImage.src = './images/MapProjectZoomedPng.png';
 canvas.width = 1024;
 canvas.height = 576;
 
-ctx.fillStyle = 'red'
+
 
 //orients the canvas to size
 ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -24,7 +24,7 @@ console.log(spriteGuy)
 
 // backgroundImage.onload = () => {
 //     //might need to change x and y to position where the screen starts
-    
+
 
 // }
 //classes for images.
@@ -38,17 +38,17 @@ class Sprite {
         this.image = image
     }
 
-    draw(){
-        ctx.drawImage(this.image, this.position.x, this.position.y) 
+    draw() {
+        ctx.drawImage(this.image, this.position.x, this.position.y)
     }
 }
-const background = new Sprite ({
+const background = new Sprite({
     position: {
         x: -150,
         y: -600
     },
     image: backgroundImage
-    
+
 
 })
 const keys = {
@@ -68,7 +68,7 @@ const keys = {
 
 //animation loop
 
-function animate(){
+function animate() {
 
     window.requestAnimationFrame(animate) //infinite loop for the animation 
     background.draw()
@@ -79,47 +79,52 @@ function animate(){
         0, //y crop 
         spriteGuy.width / 4, //crop from left to right of img
         spriteGuy.height, //full length of crop img
-        canvas.width / 2 - (spriteGuy.width / 4) /2, // these two should perfectly center SpriteGuy on canvas if he is 256/64
+        canvas.width / 2 - (spriteGuy.width / 4) / 2, // these two should perfectly center SpriteGuy on canvas if he is 256/64
         canvas.height / 2 - spriteGuy.height / 2,
         spriteGuy.width / 4,
         spriteGuy.height //last for arguments are the actual positioning of sprite on screen
     )//sprite guy position may need slight adjust later
     //if statement for key actions 
-    if (keys.w.pressed) background.position.y += 2
-    else if (keys.a.pressed) background.position.x += 2
-    else if (keys.s.pressed) background.position.y -= 2
-    else if (keys.d.pressed) background.position.x -= 2
+    if (keys.w.pressed && lastkey === 'w') background.position.y += 3
+    else if (keys.a.pressed && lastkey === 'a') background.position.x += 3
+    else if (keys.s.pressed && lastkey === 's') background.position.y -= 3
+    else if (keys.d.pressed && lastkey === 'd') background.position.x -= 3
 }
 //listen for the keydown 
-window.addEventListener('keydown', (e) => { 
-console.log('e.key') //logging the keydown event
-switch (e.key){  //switch case for keydown 
-    case 'w': 
-    keys.w.pressed = true
-break
-    case 'a':
-        keys.a.pressed = true
-        break
-    case 's':
-        keys.s.pressed = true
-        break
-    case 'd':
-        keys.d.pressed = true
-        break
-}
-console.log(keys)
+let lastkey = ''
+window.addEventListener('keydown', (e) => {
+   // console.log('e.key') //logging the keydown event
+    switch (e.key) {  //switch case for keydown 
+        case 'w':
+            keys.w.pressed = true
+            lastkey = 'w'
+            break
+        case 'a':
+            keys.a.pressed = true
+            lastkey = 'a'
+            break
+        case 's':
+            keys.s.pressed = true
+            lastkey = 's'
+            break
+        case 'd':
+            keys.d.pressed = true
+            lastkey = 'd'
+            break
+    }
+    
 })
 
 
 
 animate()
 
-window.addEventListener('keyup', (e) => { 
+window.addEventListener('keyup', (e) => {
     console.log('e.key') //logging the keyup event
-    switch (e.key){  //switch case for keyup 
-        case 'w': 
-        keys.w.pressed = false
-    break
+    switch (e.key) {  //switch case for keyup 
+        case 'w':
+            keys.w.pressed = false
+            break
         case 'a':
             keys.a.pressed = false
             break
@@ -131,4 +136,4 @@ window.addEventListener('keyup', (e) => {
             break
     }
     console.log(keys)
-    })
+})
