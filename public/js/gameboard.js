@@ -7,8 +7,8 @@ const sprite = {
     x: canvas.width / 2, // Initial position
     y: canvas.height / 2, // Initial position
     speed: 5, // Speed of movement
-    width: 50, // sprite size
-    height: 50, // sprite size
+    width: 30, // sprite size
+    height: 30, // sprite size
 };
 
 // Handle keyboard input
