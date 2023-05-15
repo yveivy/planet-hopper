@@ -4,6 +4,11 @@ var currentQuestionIndex = 0;
 var answers = {};
 var inputValue;
 
+var interactionContainer = document.getElementById('interactionContainer');
+var userInputContainer = document.getElementById('userInputContainer');
+var dialogueContainer = document.getElementById('dialogueContainer');
+
+
 var userInventory = ['duct tape', 'rusty knife', 'hair gel']
 var inventoryOfThisNpc = ['wrench', 'screws', 'shoelace']
 
@@ -27,8 +32,7 @@ function getInputValue() {
 }
 
 
-function askQuestion(currentQuestion) {
-    //document.query_selector #question element to get the user response to the current question on the board.
+function askEitherQuestionType(currentQuestion) {
     if (currentQuestion.type === "input") {
         renderTextQuestion(currentQuestion)
     } else if (currentQuestion.type === "radio") {
@@ -37,21 +41,19 @@ function askQuestion(currentQuestion) {
 }
 
 function renderTextQuestion(currentQuestion) {
-    clearQuestionContainer()
-    let questionContainer = retrieveQuestionContainer()
+    clearUserInputContainer()
     let questionText = createQuestionText(currentQuestion)
-    questionContainer.appendChild(questionText);
+    userInputContainer.appendChild(questionText);
 
     let input = document.createElement('input');
     input.type = "text";
-    questionContainer.appendChild(input);
+    userInputContainer.appendChild(input);   
 }
 
 function renderCheckBoxQuestion(currentQuestion) {
-    clearQuestionContainer()
-    let questionContainer = retrieveQuestionContainer()
+    clearUserInputContainer()
     let questionText = createQuestionText(currentQuestion)
-    questionContainer.appendChild(questionText);
+    userInputContainer.appendChild(questionText);
 
     currentQuestion.choices.forEach(choice => {
         let label = document.createElement('label');
@@ -65,18 +67,13 @@ function renderCheckBoxQuestion(currentQuestion) {
         let choiceText = document.createTextNode(choice);
         label.appendChild(choiceText);
 
-        questionContainer.appendChild(label);
+        userInputContainer.appendChild(label);
     });
+    console.log("renderCheckBoxQuestion_______")
 }
 
-function clearQuestionContainer() {
-    let questionContainer = document.getElementById('questionContainer');
-    questionContainer.innerHTML = ''
-}
-
-function retrieveQuestionContainer() {
-    let questionContainer = document.getElementById('questionContainer');
-    return questionContainer
+function clearUserInputContainer() {
+    userInputContainer.innerHTML = ''
 }
 
 function createQuestionText(currentQuestion) {
@@ -85,22 +82,20 @@ function createQuestionText(currentQuestion) {
     return questionText
 }
 
-function showQuestionContainer() {
-    let questionContainer = document.getElementById('questionContainer');
-    questionContainer.style.display = 'flex';
+function showInteractionContainer() {
+    interactionContainer.style.display = 'flex';
 }
 
-function hideQuestionContainer() {
-    let questionContainer = document.getElementById('questionContainer');
-    questionContainer.style.display = 'none';
+function hideInteractionContainer() {
+    interactionContainer.style.display = 'none';
 }
 
 function finishInteraction() {
     currentQuestionIndex = 0
     barter = false
     chat = false
-    clearQuestionContainer()
-    hideQuestionContainer()
+    clearUserInputContainer()
+    hideInteractionContainer()
 }
 
 function setInteractionModeFlag(interactionMode) {
@@ -119,8 +114,8 @@ function setInteractionModeFlag(interactionMode) {
 window.addEventListener('keydown', function(e) {
     if (e.key === ' ' && currentQuestionIndex == 0) {
         console.log("keydown 1_____________currentQuestionIndex:", currentQuestionIndex)
-        showQuestionContainer()
-        askQuestion(interactionModeQuestion)
+        showInteractionContainer()
+        askEitherQuestionType(interactionModeQuestion)
         currentQuestionIndex ++
     } else if (e.code === 'Enter' && currentQuestionIndex == 1) {
         console.log("keydown 1_____________currentQuestionIndex:", currentQuestionIndex)
@@ -128,9 +123,9 @@ window.addEventListener('keydown', function(e) {
         var interactionModeInputValue = getInputValue()
         setInteractionModeFlag(interactionModeInputValue)
         if (barter) {
-            askQuestion(offerQuestion)
+            askEitherQuestionType(offerQuestion)
         } else if (chat) {
-            askQuestion(chatQuestion)
+            askEitherQuestionType(chatQuestion)
         }
     } else if (e.code === 'Enter' && chat && currentQuestionIndex == 2) {
         console.log("keydown 1_____________currentQuestionIndex:", currentQuestionIndex)
@@ -142,7 +137,7 @@ window.addEventListener('keydown', function(e) {
         console.log("keydown 1_____________currentQuestionIndex:", currentQuestionIndex)
         currentQuestionIndex += 1 
         var offerInputValue = getInputValue()
-        askQuestion(receiveQuestion)
+        askEitherQuestionType(receiveQuestion)
     } else if (e.code === 'Enter' && barter && currentQuestionIndex == 3) {
         console.log("keydown 1_____________currentQuestionIndex:", currentQuestionIndex)
         currentQuestionIndex += 1 
