@@ -1,0 +1,59 @@
+body {
+  background: #000000;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  color: azure;
+  font-family: 'Darumadrop One', cursive;
+  font-size: xx-large;
+
+}
+
+h1 {
+  margin: 3px;
+}
+
+div {
+  display: flex;
+}
+
+#gameBoard {
+    justify-content: center;
+}
+
+#canvasContain {
+  justify-content: center;
+  position: relative;
+  border: 1px solid white;
+  height: 600px;
+  width: 800px;
+}
+
+#gameCanvas {
+  background: #cecece;
+  position:absolute;
+  z-index: 1;
+}
+
+#inventoryContainer {
+  background: rgb(155, 12, 12);
+  width: 50px;
+  height: 50px;
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+#inputForm {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #ccc;
+  padding: 10px;
+}
