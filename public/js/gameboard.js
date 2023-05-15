@@ -22,9 +22,56 @@ console.log(spriteGuy)
 //wait for sprite to load 
 
 
-backgroundImage.onload = () => {
-    //might need to change x and y to position where the screen starts
-    ctx.drawImage(backgroundImage, -150, -600)
+// backgroundImage.onload = () => {
+//     //might need to change x and y to position where the screen starts
+    
+
+// }
+//classes for images.
+class Sprite {
+    constructor({
+        position,
+        velocity,
+        image
+    }) {
+        this.position = position
+        this.image = image
+    }
+
+    draw(){
+        ctx.drawImage(this.image, this.position.x, this.position.y) 
+    }
+}
+const background = new Sprite ({
+    position: {
+        x: -150,
+        y: -600
+    },
+    image: backgroundImage
+    
+
+})
+const keys = {
+    w: {
+        pressed: false
+    },
+    a: {
+        pressed: false
+    },
+    s: {
+        pressed: false
+    },
+    d: {
+        pressed: false
+    }
+}
+
+//animation loop
+
+function animate(){
+
+    window.requestAnimationFrame(animate) //infinite loop for the animation 
+    background.draw()
     //sprite loads half the time, need to make this an async function later
     ctx.drawImage(
         spriteGuy,
@@ -37,6 +84,51 @@ backgroundImage.onload = () => {
         spriteGuy.width / 4,
         spriteGuy.height //last for arguments are the actual positioning of sprite on screen
     )//sprite guy position may need slight adjust later
-
+    //if statement for key actions 
+    if (keys.w.pressed) background.position.y += 2
+    else if (keys.a.pressed) background.position.x += 2
+    else if (keys.s.pressed) background.position.y -= 2
+    else if (keys.d.pressed) background.position.x -= 2
 }
-//only render one sprite 
+//listen for the keydown 
+window.addEventListener('keydown', (e) => { 
+console.log('e.key') //logging the keydown event
+switch (e.key){  //switch case for keydown 
+    case 'w': 
+    keys.w.pressed = true
+break
+    case 'a':
+        keys.a.pressed = true
+        break
+    case 's':
+        keys.s.pressed = true
+        break
+    case 'd':
+        keys.d.pressed = true
+        break
+}
+console.log(keys)
+})
+
+
+
+animate()
+
+window.addEventListener('keyup', (e) => { 
+    console.log('e.key') //logging the keyup event
+    switch (e.key){  //switch case for keyup 
+        case 'w': 
+        keys.w.pressed = false
+    break
+        case 'a':
+            keys.a.pressed = false
+            break
+        case 's':
+            keys.s.pressed = false
+            break
+        case 'd':
+            keys.d.pressed = false
+            break
+    }
+    console.log(keys)
+    })
