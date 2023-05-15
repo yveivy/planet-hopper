@@ -4,76 +4,39 @@ const ctx = canvas.getContext('2d');
 
 //setting up the background
 const backgroundImage = new Image();
-backgroundImage.src = './images/MainMap.png';
-// Set up sprite
-const sprite = {
-    x: canvas.width / 1024, // Initial position
-    y: canvas.height / 576, // Initial position
-    speed: 5, // Speed of movement
-    width: 50, // sprite size
-    height: 50, // sprite size
-};
+backgroundImage.src = './images/MapProjectZoomedPng.png';
+canvas.width = 1024;
+canvas.height = 576;
 
-// Handle keyboard input
-const keys = {
-    w: false,
-    a: false,
-    s: false,
-    d: false
-};
+ctx.fillStyle = 'red'
 
-window.addEventListener('keydown', function(event) {
-    switch(event.key.toLowerCase()) {
-        case 'w':
-            keys.w = true;
-            break;
-        case 'a':
-            keys.a = true;
-            break;
-        case 's':
-            keys.s = true;
-            break;
-        case 'd':
-            keys.d = true;
-            break;
-    }
-});
+//orients the canvas to size
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-window.addEventListener('keyup', function(event) {
-    switch(event.key.toLowerCase()) {
-        case 'w':
-            keys.w = false;
-            break;
-        case 'a':
-            keys.a = false;
-            break;
-        case 's':
-            keys.s = false;
-            break;
-        case 'd':
-            keys.d = false;
-            break;
-    }
-});
+//import zoomed map, must be zoomed to 400% to look to scale 
 
-// Game loop
-function gameLoop() {
-    // Clear the canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-//push in the canvas 
-ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-    // Update sprite position based on keys
-    if (keys.w) sprite.y -= sprite.speed;
-    if (keys.a) sprite.x -= sprite.speed;
-    if (keys.s) sprite.y += sprite.speed;
-    if (keys.d) sprite.x += sprite.speed;
+//importing sprite. i will have to take whatever the choose and make custom sprite sheets
+const spriteGuy = new Image()
+spriteGuy.src = './images/Dsprite.png'
+console.log(spriteGuy)
+//wait for sprite to load 
 
-    // Draw sprite
-    ctx.fillRect(sprite.x, sprite.y, sprite.width, sprite.height);
 
-    // Call the next game loop
-    requestAnimationFrame(gameLoop);
+backgroundImage.onload = () => {
+    //might need to change x and y to position where the screen starts
+    ctx.drawImage(backgroundImage, -150, -600)
+    //sprite loads half the time, need to make this an async function later
+    ctx.drawImage(
+        spriteGuy,
+        0, //x coord for crop
+        0, //y crop 
+        spriteGuy.width / 4, //crop from left to right of img
+        spriteGuy.height, //full length of crop img
+        canvas.width / 2 - (spriteGuy.width / 4) /2, // these two should perfectly center SpriteGuy on canvas if he is 256/64
+        canvas.height / 2 - spriteGuy.height / 2,
+        spriteGuy.width / 4,
+        spriteGuy.height //last for arguments are the actual positioning of sprite on screen
+    )//sprite guy position may need slight adjust later
+
 }
-
-// Start the game loop
-gameLoop();
+//only render one sprite 
