@@ -3,20 +3,44 @@ const sequelize = require('../config/connection');
 
 class Inventory extends Model {}
 
-Inventory.Init({
+Inventory.Init(  
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+    },
 
-    inventory_id: {
+    character_id: {
         type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-    },
-    item_name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    }, {
-        sequalize,
-        modelName: 'inventory',
-    });
+        references: {
+          model: 'characters',
+          key: 'character_id',
+        },
+      },
 
-    model.exports = { Inventory };
+    item_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'items',
+        key: 'item_id',
+      },
+    },
+
+    wishlist_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'wishlist',
+        key: 'wishlist_id',
+      }
+    }
+}, { 
+    sequelize,
+    timestamps: false,
+    freezeTableName: true,
+    modelName: 'inventory'
+
+});
+
+    model.exports = Inventory
