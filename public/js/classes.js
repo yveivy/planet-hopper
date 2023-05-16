@@ -48,7 +48,6 @@ class Boundary {
       this.width = 64   //pre positioning boundaries based on the 400percent zoom map
       this.height = 64
   }
-
   draw() {
       ctx.fillStyle = 'rgba(255, 0, 0, 0.0)' //this makes the boundaries invisible  
       ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
