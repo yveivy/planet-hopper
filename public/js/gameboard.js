@@ -99,7 +99,7 @@ window.addEventListener('keydown', (e) => {
 })
 animate()
 window.addEventListener('keyup', (e) => {
-    console.log('e.key') //logging the keyup event
+    console.log(e.key) //logging the keyup event
     switch (e.key) {  //switch case for keyup
         case 'w':
             keys.w.pressed = false
@@ -114,7 +114,7 @@ window.addEventListener('keyup', (e) => {
             keys.d.pressed = false
             break
     }
-    console.log(keys)
+    // console.log(keys)
 })
 
 window.addEventListener('keydown', function (event) {

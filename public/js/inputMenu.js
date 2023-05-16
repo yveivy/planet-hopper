@@ -1,13 +1,4 @@
-var barter = false
-var chat = false
-var currentQuestionIndex = 0;
-var answers = {};
-var inputValue;
-
-var interactionContainer = document.getElementById('interactionContainer');
-var userInputContainer = document.getElementById('userInputContainer');
-var dialogueContainer = document.getElementById('dialogueContainer');
-
+import { fetchOpenAiApi, createPromptForNpcResponseToTradeRequest, createPromptForNpcResponseToChat } from './ai.js';
 
 var userInventory = ['duct tape', 'rusty knife', 'hair gel']
 var inventoryOfThisNpc = ['wrench', 'screws', 'shoelace']
@@ -17,6 +8,19 @@ const offerQuestion = { type: "radio", text: "Make an offer to trade your:", cho
 const receiveQuestion = { type: "radio", text: "To get in return:", choices: [...inventoryOfThisNpc], when: barter}
 const chatQuestion = { type: "input", text: "Type to chat", when: chat }
 
+var barter = false
+var chat = false
+var currentQuestionIndex = 0;
+var inputValue;
+var dialogue;
+var tradeRequestData = {}
+var chatInputValue;
+
+
+var interactionContainer = document.getElementById('interactionContainer');
+var userInputContainer = document.getElementById('userInputContainer');
+var dialogueContainer = document.getElementById('dialogueContainer');
+var dialogueUl = document.getElementById('dialogueUl');
 
 function getInputValue() {
     let radios = document.querySelectorAll('[name="choice"]');
@@ -131,20 +135,78 @@ window.addEventListener('keydown', function(e) {
         console.log("keydown 1_____________currentQuestionIndex:", currentQuestionIndex)
         console.log("event listener for input sequence: chat______________", chat)
         currentQuestionIndex += 1 
-        var chatInputValue = getInputValue()
+        chatInputValue = getInputValue()
         finishInteraction()
     } else if (e.code === 'Enter' && barter && currentQuestionIndex == 2) {
         console.log("keydown 1_____________currentQuestionIndex:", currentQuestionIndex)
         currentQuestionIndex += 1 
-        var offerInputValue = getInputValue()
+        tradeRequestData.itemOfferedByUser = getInputValue()
         askEitherQuestionType(receiveQuestion)
     } else if (e.code === 'Enter' && barter && currentQuestionIndex == 3) {
         console.log("keydown 1_____________currentQuestionIndex:", currentQuestionIndex)
         currentQuestionIndex += 1 
-        var receiveInputValue = getInputValue()
-        finishInteraction()
+        tradeRequestData.itemRequestedByUser = getInputValue()
+        processTradeOffer()
     } else if (e.code === 'Escape' && currentQuestionIndex > 0) {
         console.log("keydown 1_____________currentQuestionIndex:", currentQuestionIndex)
         finishInteraction()
     }
 });
+
+window.addEventListener('keydown', async function(e) {
+    if (e.key === 'q') {
+        console.log("retrievingPromptResponse__________")
+        var promptResponse = await retrievePromptResponse()
+        console.log("Q key event listener: promptResponse__________",promptResponse)
+    }
+
+});
+
+
+
+async function retrievePromptResponse() {
+    var prompt = createPromptForNpcResponseToChat()
+    var promptResponse = await fetchOpenAiApi(prompt)
+    return promptResponse
+}
+
+async function processTradeOffer() {
+    //ToDo: fetchTradeOfferResponse(tradeRequestData)
+    var prompt = createPromptForNpcResponseToTradeRequest()
+    var promptResponse = await fetchOpenAiApi(prompt)
+    var tradeSummary = `User offers ${tradeRequestData.itemOfferedByUser} in exchange for ${tradeRequestData.itemRequestedByUser}`
+    var dialogueText = `NPC: ${promptResponse}`
+    appendLiToDialogueBox(tradeSummary)
+    appendLiToDialogueBox(dialogueText)
+    clearUserInputContainer()
+    // appendTradeOfferSummaryToUserInputContainer:
+}
+
+function appendLiToDialogueBox(text) {
+    var li = document.createElement("li")
+    li.innerHTML = text
+    dialogueUl.appendChild(li)
+}
+
+// function createReqBodyToCheckTrade (itemOfferedByUser, itemRequestedByUser) {
+//     var tradeRequestData = {
+//         "itemOfferedByUser": itemOfferedByUser,
+//         "itemRequestedByUser": itemRequestedByUser
+//     }
+//     return reqBody
+// }
+
+async function fetchTradeOfferResponse(reqBody) {
+    var responseToTradeOffer = await fetch('http://localhost:3001/api/trade/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            reqBody: reqBody
+        }),
+    })
+    var promptResponse = await promptResponseNotJson.json();
+    return promptResponse
+}
+
