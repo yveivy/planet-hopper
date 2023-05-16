@@ -1,11 +1,7 @@
 class Sprite {
-  constructor({
-      position,
-      velocity,
-      image,
-      frames = { max: 1 },
+  constructor({position, velocity, image, frames = { max: 1 }, sprites
   }) {
-      this.frames = frames
+      this.frames = {...frames, val: 0, elapsed: 0}
 
       this.position = position
       this.image = image
@@ -14,14 +10,15 @@ class Sprite {
           this.height = this.image.height
       }
 
-
+this.moving = false
+this.sprites = sprites
   }
 
   draw() {
 
       ctx.drawImage(
           this.image,
-          0, //x coord for crop
+          this.frames.val * this.width, //x coord for crop
           0, //y crop 
           this.image.width / this.frames.max, //crop from left to right of img
           this.image.height, //full length of crop img
@@ -29,7 +26,17 @@ class Sprite {
           this.position.y,
           this.image.width / this.frames.max,
           this.image.height //last for arguments are the actual positioning of sprite on screen
-      )//sprite guy position may need slight adjust later
+      )
+      if(!this.moving) return
+      if (this.frames.max > 1 ) {
+        this.frames.elapsed ++ 
+      }
+      if(this.frames.elapsed % 10 === 0){
+
+      if (this.frames.val < this.frames.max- 1) 
+      this.frames.val++
+      else this.frames.val = 0  //this is statment itterates over the 4 sprite images in a row and prevents them from going past the frouth image 
+      }
   }
 }
 

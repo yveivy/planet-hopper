@@ -49,7 +49,14 @@ spriteGuy.src = './images/Dsprite.png'
 console.log(spriteGuy)
 //wait for sprite to load 
 
-
+const spriteGuyUP = new Image()
+spriteGuyUP.src = "./images/Dsprite.png"
+const spriteGuyDOWN = new Image()
+spriteGuyDOWN.src = "./images/Dsprite.png"
+const spriteGuyLEFT = new Image()
+spriteGuyLEFT.src = "./images/Dsprite.png"
+const spriteGuyRIGHT = new Image()
+spriteGuyRIGHT.src = "./images/Dsprite.png"
 // backgroundImage.onload = () => {
 //     //might need to change x and y to position where the screen starts
 
@@ -67,6 +74,12 @@ const newDude = new Sprite({
     image: spriteGuy,
     frames: {
         max: 4
+    },
+    sprites: {
+        up: spriteGuyUP,
+        down: spriteGuyDOWN,
+        left: spriteGuyLEFT,
+        right: spriteGuyRIGHT,
     }
 })
 
@@ -147,8 +160,10 @@ foreground.draw()
 
 
     let moving = false
+    newDude.moving = false
     if (keys.w.pressed && lastkey === 'w') {
         moving = true
+        newDude.moving = true
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
             if (
@@ -176,6 +191,7 @@ foreground.draw()
             })
     }else if (keys.a.pressed && lastkey === 'a') {
         moving = true
+        newDude.moving = true
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
             if (
@@ -198,6 +214,7 @@ foreground.draw()
             moveables.forEach(moveable => { moveable.position.x += 3 })
     }else if (keys.s.pressed && lastkey === 's') {
         moving = true
+        newDude.moving = true
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
             if (
@@ -220,6 +237,7 @@ foreground.draw()
             moveables.forEach(moveable => { moveable.position.y -= 2 })
     }else if (keys.d.pressed && lastkey === 'd') {
         moving = true
+        newDude.moving = true
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i]
             if (
