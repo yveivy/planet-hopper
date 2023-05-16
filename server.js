@@ -1,3 +1,41 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const express = require('express');
 const { Characters, Inventory, Items, Wishlist } = require('./models');
 // Import and require mysql2
