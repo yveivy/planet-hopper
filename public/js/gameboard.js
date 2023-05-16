@@ -125,6 +125,21 @@ const background = new Sprite({
 
 
 })
+//adding foreground layers. will set to render last so they appear above the NewGuy 
+const foregroundImg = new Image()
+foregroundImg.src = "./images/gameLayers/MainForeground.png"
+
+const foreground = new Sprite({
+    position: {
+        x: offsetBoundary.x,
+        y: offsetBoundary.y
+    },
+    image: foregroundImg
+
+
+})
+
+
 const keys = {
     w: {
         pressed: false
@@ -147,7 +162,7 @@ const testBoundary = new Boundary({
     }
 })
 
-const moveables = [background, ...boundaries]
+const moveables = [background, ...boundaries, foreground]
 //below function replaced my giant if statement that covered how the collision was narrowed down to the collision array objects positions on the map
 function boxCollision({ rectangle1, rectangle2 }) {
     return (
@@ -168,7 +183,7 @@ function animate() {
 
     newDude.draw()
 
-
+foreground.draw()
 
 
     // if(spriteGuy.position.x + spriteGuy.width)
