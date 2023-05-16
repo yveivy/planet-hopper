@@ -1,4 +1,4 @@
-const { Model, DataTypes } = require('sequelize');
+const { Sequelize, Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
 class Characters extends Model {}
@@ -7,7 +7,7 @@ Characters.init(
     {
         character_id: {
             type: DataTypes.INTEGER,
-            primary: true,
+            primaryKey: true,
             autoIncrement: true,
         },
 
@@ -17,13 +17,21 @@ Characters.init(
         },
 
         role: {
-            type: DataTypes.String,
+            type: DataTypes.STRING,
             allowNull: false,
         },
+
+        bio: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+
     }, {
         sequelize,
+        timestamps: false,
+        freezeTableName: true,
         modelName: 'characters'
     });
 
-    module.exports = { Characters }
+    module.exports = Characters
 
