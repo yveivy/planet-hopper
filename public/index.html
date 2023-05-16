@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<link>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>~*~PLANET~*~HOPPER~*~</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Darumadrop+One&family=Oswald:wght@300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css"></link>
+</head>
+
+<body>
+  <header>
+    <h1>Planet Hopper!</h1>
+  </header>
+  <div id="gameBoard">
+    <div id="canvasContain">
+      <canvas id="gameCanvas" width="800" height="600"></canvas>
+      <div id="inventoryContainer"></div>
+      <div id="interactionContainer">
+          <div id="userInputContainer">
+              <p>User Input</p>
+          </div>
+          <div id="dialogueContainer">
+              <p>Dialogue</p>
+          </div>
+          <div id="npcHeadshotContainer">
+          </div>            
+      </div>  
+    </div>
+  </div>
+
+        <script src="js/classes.js"></script>
+        <script src="js/collisions1.js"></script>
+        <script src="js/gameboard.js"></script>
+        <script src="js/inputMenu.js"></script>
+        <script src="../src/ai.js"></script>
+</body>
+</html>

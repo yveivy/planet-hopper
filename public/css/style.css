@@ -1,0 +1,104 @@
+body {
+  background: #000000;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  color: azure;
+  font-family: 'Darumadrop One', cursive;
+  font-size: xx-large;
+
+}
+
+h1 {
+  margin: 3px;
+}
+
+div {
+  display: flex;
+}
+
+#gameBoard {
+    justify-content: center;
+}
+
+#canvasContain {
+  justify-content: center;
+  position: relative;
+  border: 1px solid white;
+  height: 576px;
+  width: 1024px;
+}
+
+#gameCanvas {
+  background: #cecece;
+  position:absolute;
+  z-index: 1;
+}
+
+#inventoryContainer {
+  background: rgb(155, 12, 12);
+  width: 50px;
+  height: 50px;
+  z-index: 3;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+#inputForm {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #ccc;
+  padding: 10px;
+}
+
+#interactionContainer {
+  position: absolute; 
+  bottom: 0;
+  left: 0; 
+  width: 100%; 
+  height: 100%; 
+  display: none; 
+  background: 
+  rgba(255,255,255,0.7); 
+  flex-direction: row; 
+  justify-content: flex-end; 
+  align-items: flex-end;
+  z-index: 2;
+}
+
+#userInputContainer {
+  width: 33%;
+  height: 33%; 
+  border-width: 3px 0 3px 3px;
+  border-style: dashed; 
+  border-color: black"
+}
+
+#dialogueContainer {
+  width: 33%;
+  height: 33%; 
+  border-width: 3px 3px 3px 0; 
+  border-style: dashed; 
+  border-color: black;
+}
+
+#npcHeadshotContainer {
+  width: 33%; 
+  height: 33%; 
+  border-width: 3px;
+  border-style: dashed;
+  border-color: black; 
+  background: url('https://tinyurl.com/f64x4z2h') no-repeat center center; 
+  background-size: cover;
+}
+
+
+
+
