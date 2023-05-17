@@ -1,0 +1,12 @@
+body {
+    background-color: black;
+}
+
+h1 {
+    position: absolute;
+    font-family: 'Darumadrop One', cursive;
+}
+
+h1, h2, label {
+    color: white;
+}

@@ -1,6 +1,6 @@
 class Sprite {
-  constructor({position, velocity, image, frames = { max: 1 }, sprites
-  }) {
+  constructor({position, velocity, image, frames = { max: 1 }, sprites = []})
+   {
       this.frames = {...frames, val: 0, elapsed: 0}
 
       this.position = position
@@ -48,9 +48,23 @@ class Boundary {
       this.width = 64   //pre positioning boundaries based on the 400percent zoom map
       this.height = 64
   }
-
   draw() {
-      ctx.fillStyle = 'rgba(255, 0, 0, 0.0)' //this makes the boundaries invisible  
+      ctx.fillStyle = 'rgba(255, 0, 0, 0.5)' //this makes the boundaries invisible  
+      ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
+  }
+}
+
+class Interaction {
+  static width = 64;  //the number represents the pixel square size*the zoom level 
+  static height = 64;
+  constructor({ position }) {
+      this.position = position
+      this.width = 64   //pre positioning boundaries based on the 400percent zoom map
+      this.height = 64
+  }
+  if 
+  draw() {
+      ctx.fillStyle = 'rgba(255, 0, 0, 0.5)' //this makes the boundaries invisible  
       ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
   }
 }
