@@ -1,3 +1,4 @@
+
 const Sequelize = require('sequelize');
 require('dotenv').config();
 
@@ -11,5 +12,6 @@ const sequelize = new Sequelize(
     port: 3306,
   }
 );
-
+    console.log(`Connected to the game_db database.`)
 module.exports = sequelize;
+

@@ -1,13 +1,4 @@
-var barter = false
-var chat = false
-var currentQuestionIndex = 0;
-var answers = {};
-var inputValue;
-
-var interactionContainer = document.getElementById('interactionContainer');
-var userInputContainer = document.getElementById('userInputContainer');
-var dialogueContainer = document.getElementById('dialogueContainer');
-
+import { fetchOpenAiApi, createPromptForNpcResponseToTradeRequest, createPromptForNpcResponseToChat } from './ai.js';
 
 var userInventory = ['duct tape', 'rusty knife', 'hair gel']
 var inventoryOfThisNpc = ['wrench', 'screws', 'shoelace']
@@ -17,8 +8,20 @@ const offerQuestion = { type: "radio", text: "Make an offer to trade your:", cho
 const receiveQuestion = { type: "radio", text: "To get in return:", choices: [...inventoryOfThisNpc], when: barter}
 const chatQuestion = { type: "input", text: "Type to chat", when: chat }
 
+var barter = false
+var chat = false
+var currentQuestionIndex = 0;
+var dialogueList = []
+var tradeRequestData = {}
+var chatInputValue;
 
-function getInputValue() {
+
+var interactionContainer = document.getElementById('interactionContainer');
+var userInputContainer = document.getElementById('userInputContainer');
+var dialogueContainer = document.getElementById('dialogueContainer');
+var dialogueUl = document.getElementById('dialogueUl');
+
+function getRadioInputValue() {
     let radios = document.querySelectorAll('[name="choice"]');
     let selectedValue;
 
@@ -31,6 +34,10 @@ function getInputValue() {
     return selectedValue; // this will be the value of the selected radio button
 }
 
+function getTextInputValue() {
+    let textInputValue = document.querySelector("#chatInput").value
+    return textInputValue
+}
 
 function askEitherQuestionType(currentQuestion) {
     if (currentQuestion.type === "input") {
@@ -47,6 +54,7 @@ function renderTextQuestion(currentQuestion) {
 
     let input = document.createElement('input');
     input.type = "text";
+    input.id = "chatInput"
     userInputContainer.appendChild(input);   
 }
 
@@ -75,6 +83,13 @@ function renderCheckBoxQuestion(currentQuestion) {
 function clearUserInputContainer() {
     userInputContainer.innerHTML = ''
 }
+function clearDialogueUl() {
+    dialogueUl.innerHTML = ''
+}
+function clearChatInput() {
+    var chatInput = document.querySelector("#chatInput")
+    chatInput.value = ""
+}
 
 function createQuestionText(currentQuestion) {
     let questionText = document.createElement('p');
@@ -94,6 +109,10 @@ function finishInteraction() {
     currentQuestionIndex = 0
     barter = false
     chat = false
+    dialogueList = []
+    tradeRequestData = {}
+    chatInputValue = ''
+    clearDialogueUl()
     clearUserInputContainer()
     hideInteractionContainer()
 }
@@ -113,38 +132,119 @@ function setInteractionModeFlag(interactionMode) {
 // var nextBtn = document.getElementById('nextButton')
 window.addEventListener('keydown', function(e) {
     if (e.key === ' ' && currentQuestionIndex == 0) {
-        console.log("keydown 1_____________currentQuestionIndex:", currentQuestionIndex)
+        //Todo: var interactionObject = identifyInteractionObject()
+        //Todo: dataOfInteractionObject = getDataOfInteractionObject()
         showInteractionContainer()
         askEitherQuestionType(interactionModeQuestion)
         currentQuestionIndex ++
     } else if (e.code === 'Enter' && currentQuestionIndex == 1) {
-        console.log("keydown 1_____________currentQuestionIndex:", currentQuestionIndex)
-        currentQuestionIndex += 1 
-        var interactionModeInputValue = getInputValue()
+        var interactionModeInputValue = getRadioInputValue()
+        if (!interactionModeInputValue) {
+            console.log("Tried to press enter before any input option selected")
+            return
+        }
         setInteractionModeFlag(interactionModeInputValue)
         if (barter) {
             askEitherQuestionType(offerQuestion)
         } else if (chat) {
             askEitherQuestionType(chatQuestion)
         }
-    } else if (e.code === 'Enter' && chat && currentQuestionIndex == 2) {
-        console.log("keydown 1_____________currentQuestionIndex:", currentQuestionIndex)
-        console.log("event listener for input sequence: chat______________", chat)
-        currentQuestionIndex += 1 
-        var chatInputValue = getInputValue()
-        finishInteraction()
+        currentQuestionIndex ++ 
+    } else if (e.code === 'Enter' && chat && currentQuestionIndex >= 2) { 
+        chatInputValue = getTextInputValue()
+        if (chatInputValue=="") {
+            console.log("Tried to press enter before any input option selected")
+            return
+        }
+        dialogueList.push(`*User: ${chatInputValue}*`)
+        currentQuestionIndex ++
+        processChatMessage(chatInputValue)
     } else if (e.code === 'Enter' && barter && currentQuestionIndex == 2) {
-        console.log("keydown 1_____________currentQuestionIndex:", currentQuestionIndex)
-        currentQuestionIndex += 1 
-        var offerInputValue = getInputValue()
+        tradeRequestData.itemOfferedByUser = getRadioInputValue()
+        if (!tradeRequestData.itemOfferedByUser) {
+            console.log("Tried to press enter before any input option selected")
+            return
+        }
+        console.log("tradeRequestData.itemOfferedByUser________",tradeRequestData.itemOfferedByUser)
         askEitherQuestionType(receiveQuestion)
+        currentQuestionIndex ++
     } else if (e.code === 'Enter' && barter && currentQuestionIndex == 3) {
-        console.log("keydown 1_____________currentQuestionIndex:", currentQuestionIndex)
-        currentQuestionIndex += 1 
-        var receiveInputValue = getInputValue()
-        finishInteraction()
+        tradeRequestData.itemRequestedByUser = getRadioInputValue()
+        if (!tradeRequestData.itemRequestedByUser) {
+            console.log("Tried to press enter before any input option selected")
+            return
+        }
+        currentQuestionIndex ++ 
+        processTradeOffer()
     } else if (e.code === 'Escape' && currentQuestionIndex > 0) {
-        console.log("keydown 1_____________currentQuestionIndex:", currentQuestionIndex)
         finishInteraction()
     }
 });
+
+window.addEventListener('keydown', async function(e) {
+    if (e.key === 'q') {
+        console.log("retrievingPromptResponse__________")
+        var promptResponse = await retrievePromptResponse()
+        console.log("Q key event listener: promptResponse__________",promptResponse)
+    }
+
+});
+
+
+async function processChatMessage() {
+    clearDialogueUl()
+    clearChatInput()
+    var prompt = createPromptForNpcResponseToChat()
+    var promptResponse = await fetchOpenAiApi(prompt)
+    var npcText = `NPC: ${promptResponse}`
+    dialogueList.push(npcText)
+    console.log("dialogueList__________", dialogueList)
+    for (let line of dialogueList) {
+        appendLiToDialogueBox(line)
+    }
+    
+    // clearUserInputContainer()
+    // appendTradeOfferSummaryToUserInputContainer:
+}
+
+async function processTradeOffer() {
+    //ToDo: fetchTradeOfferResponse(tradeRequestData)
+    var prompt = createPromptForNpcResponseToTradeRequest()
+    var promptResponse = await fetchOpenAiApi(prompt)
+    var tradeSummary = `*User offers ${tradeRequestData.itemOfferedByUser} in exchange for ${tradeRequestData.itemRequestedByUser}.*`
+    var dialogueText = `NPC: ${promptResponse}`
+    appendLiToDialogueBox(tradeSummary)
+    appendLiToDialogueBox(dialogueText)
+    clearUserInputContainer()
+    // appendTradeOfferSummaryToUserInputContainer:
+}
+
+function appendLiToDialogueBox(text) {
+    console.log("appendLiToDialogueBox__________", text)
+    var li = document.createElement("li")
+    li.innerHTML = text
+    dialogueUl.appendChild(li)
+}
+
+// function createReqBodyToCheckTrade (itemOfferedByUser, itemRequestedByUser) {
+    // var tradeRequestData = {
+    //     "itemOfferedByUser": itemOfferedByUser,
+    //     "itemRequestedByUser": itemRequestedByUser
+    // }
+//     return reqBody
+// }
+
+async function fetchTradeOfferResponse(reqBody) {
+    var responseToTradeOffer = await fetch('http://localhost:3001/api/trade/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            reqBody: reqBody
+        }),
+    })
+    var promptResponse = await promptResponseNotJson.json();
+    return promptResponse
+}
+

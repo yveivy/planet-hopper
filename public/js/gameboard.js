@@ -388,6 +388,16 @@ window.addEventListener('keyup', (e) => {
         case 'd':
             keys.d.pressed = false
             break
-    }
-    
+    } 
 })
+
+// window.addEventListener('keydown', function (event) {
+//     if (event.key === 'e' || event.key === 'e') {
+//     let inventoryContainer = document.getElementById('inventoryContainer');
+//     if (inventoryContainer.style.display === 'none') {
+//         inventoryContainer.style.display = 'block';
+//     } else {
+//         inventoryContainer.style.display = 'none';
+//     }
+// }
+// });
