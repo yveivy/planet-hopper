@@ -2,14 +2,13 @@ body {
     position: relative;
     margin: 0;
     padding: 0;
-    height: 100vh;
+    height: 200vh;
     width: 100%;
     display: flex;
-    align-items: center;
+    /* align-items: flex-end; */
     justify-content: center;
-    /* background-image: url('../assets/otherBackground.png'); Your other background image */
-    background-position: center;
-    background-repeat: no-repeat;
+    background-image: url('../images/spaceBackground.png');
+    background-repeat: repeat;
     background-size: cover;
 }
 
@@ -19,12 +18,16 @@ h1 {
     left: 50%;
     transform: translate(-50%, -50%);
     font-family: 'Darumadrop One', cursive;
+    color: white;
+    font-size: 100px;
 }
 
 #handheldNintendoContainer {
+    top: 800px;
+    /* margin: 500px; */
     position: relative;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
 }
 
 #handheldNintendo {
