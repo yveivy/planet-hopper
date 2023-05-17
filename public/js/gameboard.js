@@ -414,3 +414,31 @@ window.addEventListener('keyup', (e) => {
 //     }
 // }
 // });
+
+
+
+function animateTheIntroZoom() {
+    var tl = gsap.timeline();
+
+    // Add animation for #intro element
+    tl.to("#infoButton", {
+      opacity: 0,
+      duration: 1
+    });
+
+    // Add animation for #startGame element
+    tl.to("#startGame", {
+      opacity: 0,
+      duration: 1
+    });
+
+    // Add animation for #handheldNintendo element
+    tl.to("#handheldNintendo", {
+      duration: 3,
+      scale: 3,
+      opacity: 0,
+      onComplete: function() {
+        window.location.href = "/game";
+      }
+    });
+  }
