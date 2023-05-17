@@ -3,9 +3,6 @@ const { Characters, Inventory, Items, Wishlist } = require('./models');
 // Import and require mysql2
 const mysql = require('mysql2');
 const config = require('./config/connection')
-<<<<<<< HEAD
-const router = require('./routes/itemRoutes')
-=======
 const path = require('path');
 const session = require('express-session');
 const exphbs = require('express-handlebars');
@@ -14,7 +11,8 @@ const hbs = exphbs.create();
 const sequelize = require('./config/connection');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 require('dotenv').config();
->>>>>>> 829c0a5bb81e0ffe407517087cbe269c677a1847
+
+const router = require('./controllers/api/itemRoutes')
 
 const PORT = process.env.PORT || 3001;
 const app = express();
