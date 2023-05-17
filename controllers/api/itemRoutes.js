@@ -2,18 +2,26 @@ const express = require('express');
 const router = express.Router();
 const { Characters, Items, Inventory, Wishlist } = require('../../models');
 
-router.put('/trade/:fromCharacterId/:toCharacterId/:fromItemName/:toItemName', async (req, res) => {
+router.get('/test', (req, res) => {
+    res.send('Test get route is working');
+});
+
+router.put('/test', (req, res) => {
+    res.send('Test put route is working')
+})
+
+router.put('/trade/:fromCharacterId/:toCharacterId/:fromItemId/:toItemId', async (req, res) => {
     try {
-        const { fromCharacterId, toCharacterId, fromItemName, toItemName } = req.params;
+        const { fromCharacterId, toCharacterId, fromItemId, toItemId } = req.params;
 
         await Promise.all([
             Inventory.update(
-                {character_id: toCharacterId, item_name: toItemName },
-                {where: { character_id: fromCharacterId, item_name: fromItemName}}
+                {character_id: toCharacterId, item_id: toItemId },
+                {where: { character_id: fromCharacterId, item_id: fromItemId}}
             ),
             Inventory.update(
-                {character_id: toCharacterId, item_name: toItemName },
-                {where: { character_id: fromCharacterId, item_name: fromItemName}}
+                {character_id: fromCharacterId, item_id: fromItemId },
+                {where: { character_id: toCharacterId, item_id: toItemId}}
             ),
 
         ]);
@@ -36,10 +44,11 @@ router.get('/inventory/:mainCharacterId', async (req, res) => {
             include: [
                 {
                     model: Characters,
-                    attributes: [ 'character_id', 'character_name']
+                    attributes: ['character_name']
                 },
 
-                { model: Items, attributes: ['item_id', 'item_name'] 
+                { model: Items, 
+                    attributes: ['item_name'] 
             
                 },
             ],
@@ -53,16 +62,20 @@ router.get('/inventory/:mainCharacterId', async (req, res) => {
 });
 
 //GET route for retrieving a character's inventory
-router.get('/inventory/:characterId', async (req, res) => {
+router.get('/character-inventory/:characterId', async (req, res) => {
     try {
         const { characterId } = req.params;
 
         const inventory = await Inventory.findAll({
             where: { character_id:  characterId },
             include: [
+                {
+                 model: Characters,
+                    attributes: ['character_name']
+                },
                
-               
-                { model: Items, attributes: ['item_id', 'item_name']},
+                { model: Items, 
+                    attributes: ['item_name']},
             ],
         });
 
@@ -72,6 +85,19 @@ router.get('/inventory/:characterId', async (req, res) => {
         return res.status(500).json({ error: 'Internal server error'});
     }
 }); 
+
+router.get('/biography/:characterId', async (req, res) => {
+    try {
+        const { characterId } = req.params;
+
+        const biography = await Characters.findByPk(characterId);
+
+        return res.status(200).json(biography);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 
 module.exports = router;
