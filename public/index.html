@@ -20,22 +20,29 @@
       <canvas id="gameCanvas" width="800" height="600"></canvas>
       <div id="inventoryContainer"></div>
       <div id="interactionContainer">
-          <div id="userInputContainer">
-              <p>User Input</p>
-          </div>
+          <div id="userInputAndDialogueContainer">
+            <div id='userInputContainer'></div>
           <div id="dialogueContainer">
-              <p>Dialogue</p>
+              <ul id="dialogueUl"></ul>
           </div>
-          <div id="npcHeadshotContainer">
+        </div>
+
+          <div id="npcDetailsContainer">
+            <div id="npcNameContainer">
+              <h2>NPC Name</h2>
+            </div>
+            <div id="npcHeadshotContainer"></div>
+            <div id="npcBioContainer">
+              <p>Bio</p>
+            </div>
           </div>            
       </div>  
     </div>
   </div>
-
-        <script src="js/classes.js"></script>
-        <script src="js/collisions1.js"></script>
-        <script src="js/gameboard.js"></script>
-        <script src="js/inputMenu.js"></script>
-        <script src="../src/ai.js"></script>
+    <script type="module" src="js/gameboard.js"></script>
+    <script type="module" src="js/inputMenu.js"></script>
+    <script type="module" src="js/ai.js"></script>
+    <script src="js/classes.js"></script>
+    <script src="js/collisions1.js"></script>
 </body>
 </html>
