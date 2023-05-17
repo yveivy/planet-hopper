@@ -1,0 +1,53 @@
+body {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* background-image: url('../assets/otherBackground.png'); Your other background image */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+h1 {
+    position: absolute;
+    top: 10%; /* Adjust as needed */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Darumadrop One', cursive;
+}
+
+#handheldNintendoContainer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+#handheldNintendo {
+    display: block;
+    width: 900px; /* Adjust as needed */
+}
+
+#startGame, #info {
+    position: absolute;
+    /* Adjust the top and left values as needed to position your buttons */
+}
+
+#info {
+    top: 50%; 
+    left: 60%;
+}
+
+#startGame {
+    top: 50%; 
+    left: 50%;
+}
+
+#login {
+    top: 50%; 
+    left: 70%;
+}

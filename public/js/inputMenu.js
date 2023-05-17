@@ -132,7 +132,7 @@ function setInteractionModeFlag(interactionMode) {
 // var nextBtn = document.getElementById('nextButton')
 window.addEventListener('keydown', function(e) {
     if (e.key === ' ' && currentQuestionIndex == 0) {
-        //Todo: var interactionObject = identifyInteractionObject()
+        console.log("inputMenu.js knows it's " + interactionObject)
         //Todo: dataOfInteractionObject = getDataOfInteractionObject()
         showInteractionContainer()
         askEitherQuestionType(interactionModeQuestion)
@@ -156,7 +156,7 @@ window.addEventListener('keydown', function(e) {
             console.log("Tried to press enter before any input option selected")
             return
         }
-        dialogueList.push(`*User: ${chatInputValue}*`)
+        dialogueList.push(`User: "${chatInputValue}"`)
         currentQuestionIndex ++
         processChatMessage(chatInputValue)
     } else if (e.code === 'Enter' && barter && currentQuestionIndex == 2) {
