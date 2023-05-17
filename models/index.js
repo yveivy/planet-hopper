@@ -5,6 +5,8 @@ const Characters = require('./characters');
 const Items = require('./items');
 const Wishlist = require('./wishlist');
 const Inventory = require('./inventory');
+const User = require('./user')
+
 
 Characters.hasOne(Wishlist, {
     foreignKey: 'character_id',
@@ -38,4 +40,4 @@ Inventory.belongsTo(Items, {
 });
 
 
-module.exports = { Characters, Inventory, Items, Wishlist};
+module.exports = { Characters, Inventory, Items, Wishlist, User};
