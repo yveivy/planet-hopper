@@ -5,7 +5,7 @@ const backgroundImage = new Image();
 backgroundImage.src = './images/MapProjectZoomedPng.png';
 canvas.width = 1024;
 canvas.height = 576;
-
+let interactionObject = []
 // gsap.to("#myImage", { duration: 1, opacity: 1 });
 
 
@@ -225,20 +225,23 @@ foreground.draw()
                 if (interaction.position.value === 4750) {
                 
 
-                    console.log("Interacting with symbol 4750");
-                    
+                    console.log("Interacting with Zara");
+                    interactionObject = "Zara"
                 } else if (interaction.position.value === 2020) {
-                    console.log("Interacting with symbol 2020");
-                    
+                    console.log("Interacting with Sketchy Schemer");
+                    interactionObject = "Sketchy"
                 } else if (interaction.position.value === 5050) {
-                    console.log("Interacting with symbol 5050");
-                   
+                    console.log("Interacting with Violet");
+                    interactionObject = "Violet"
                 } else if (interaction.position.value === 6060) {
-                    console.log("Interacting with symbol 6060");
-                   
+                    console.log("Interacting with Beryl and Basil Hydra");
+                    interactionObject = "Hydra"
                 } else if (interaction.position.value === 3030) {
-                    console.log("Interacting with symbol 3030");
-                    
+                    console.log("Interacting with Abe");
+                    interactionObject = "Abe"
+                } else if (interaction.position.value === 1010) {
+                    console.log("Interacting with Taylor");
+                    interactionObject = "Taylor"
                 }
                 break;
             }

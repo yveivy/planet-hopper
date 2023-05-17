@@ -132,7 +132,7 @@ function setInteractionModeFlag(interactionMode) {
 // var nextBtn = document.getElementById('nextButton')
 window.addEventListener('keydown', function(e) {
     if (e.key === ' ' && currentQuestionIndex == 0) {
-        //Todo: var interactionObject = identifyInteractionObject()
+        console.log("inputMenu.js knows it's " + interactionObject)
         //Todo: dataOfInteractionObject = getDataOfInteractionObject()
         showInteractionContainer()
         askEitherQuestionType(interactionModeQuestion)
