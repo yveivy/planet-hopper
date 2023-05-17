@@ -224,6 +224,7 @@ foreground.draw()
             ) {
                 if (interaction.position.value === 4750) {
                 
+
                     console.log("Interacting with symbol 4750");
                     
                 } else if (interaction.position.value === 2020) {
