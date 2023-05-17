@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Characters, Items, Inventory, Wishlist } = require('../models');
+const { Characters, Items, Inventory, Wishlist } = require('../../models');
 
 router.put('/trade/:fromCharacterId/:toCharacterId/:fromItemName/:toItemName', async (req, res) => {
     try {
