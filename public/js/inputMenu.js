@@ -1,5 +1,6 @@
 import { fetchOpenAiApi, createPromptForNpcResponseToTradeRequest, createPromptForNpcResponseToChat } from './ai.js';
 
+
 var userInventory = ['duct tape', 'rusty knife', 'hair gel']
 var inventoryOfThisNpc = ['wrench', 'screws', 'shoelace']
 
@@ -20,6 +21,7 @@ var interactionContainer = document.getElementById('interactionContainer');
 var userInputContainer = document.getElementById('userInputContainer');
 var dialogueContainer = document.getElementById('dialogueContainer');
 var dialogueUl = document.getElementById('dialogueUl');
+var npcBioContainer = document.getElementById('npcBioContainer')
 
 function getRadioInputValue() {
     let radios = document.querySelectorAll('[name="choice"]');
@@ -132,9 +134,10 @@ function setInteractionModeFlag(interactionMode) {
 // var nextBtn = document.getElementById('nextButton')
 window.addEventListener('keydown', function(e) {
     if (e.key === ' ' && currentQuestionIndex == 0) {
-        //Todo: var interactionObject = identifyInteractionObject()
+        console.log("inputMenu.js knows it's " + interactionObject);
         //Todo: dataOfInteractionObject = getDataOfInteractionObject()
         showInteractionContainer()
+        npcBioContainer.innerHTML = `  Bio:  'insert character bio here'`
         askEitherQuestionType(interactionModeQuestion)
         currentQuestionIndex ++
     } else if (e.code === 'Enter' && currentQuestionIndex == 1) {
@@ -227,10 +230,10 @@ function appendLiToDialogueBox(text) {
 }
 
 // function createReqBodyToCheckTrade (itemOfferedByUser, itemRequestedByUser) {
-    // var tradeRequestData = {
-    //     "itemOfferedByUser": itemOfferedByUser,
-    //     "itemRequestedByUser": itemRequestedByUser
-    // }
+//     var tradeRequestData = {
+//         "itemOfferedByUser": itemOfferedByUser,
+//         "itemRequestedByUser": itemRequestedByUser
+//     }
 //     return reqBody
 // }
 

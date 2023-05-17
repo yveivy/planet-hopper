@@ -3,6 +3,6 @@ const openAiRoutes = require('./openAiRoutes.js');
 const userRoutes = require("./userRoutes")
 
 router.use('/openai', openAiRoutes);
-// router.use('/users', userRoutes);
+router.use('/users', userRoutes);
 
 module.exports = router;

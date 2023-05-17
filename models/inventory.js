@@ -3,7 +3,7 @@ const sequelize = require('../config/connection');
 
 class Inventory extends Model {}
 
-Inventory.Init(  
+Inventory.init(  
   {
     id: {
       type: DataTypes.INTEGER,
@@ -43,4 +43,4 @@ Inventory.Init(
 
 });
 
-    model.exports = Inventory
+    module.exports = Inventory
