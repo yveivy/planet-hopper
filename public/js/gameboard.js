@@ -6,20 +6,20 @@ backgroundImage.src = './images/MapProjectZoomedPng.png';
 canvas.width = 1024;
 canvas.height = 576;
 
-gsap.to("#myImage", { duration: 1, opacity: 1 });
+// gsap.to("#myImage", { duration: 1, opacity: 1 });
 
 
-setTimeout(function() {
-  gsap.to("#myImage", { duration: 1, opacity: 0 });
-}, 5000);
+// setTimeout(function() {
+//   gsap.to("#myImage", { duration: 1, opacity: 0 });
+// }, 5000);
 
-gsap.to('#overlapping', {
-    opacity: 1,
-    repeat: 7,
-    yoyo: true,
-})
+// gsap.to('#overlapping', {
+//     opacity: 1,
+//     repeat: 7,
+//     yoyo: true,
+// })
 
-colArrMap = []
+let colArrMap = []
 for (let i = 0; i < colArr.length; i += 60) {
     colArrMap.push(colArr.slice(i, 60 + i)) //slicing the main collisions array into rows of 60(amount of tiles per row)
 }
