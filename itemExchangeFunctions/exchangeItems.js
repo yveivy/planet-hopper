@@ -1,4 +1,4 @@
-const { Inventory, Characters, Items } = require('../models');
+// const { Inventory, Characters, Items } = require('../models');
 
 
 async function makeTrade(fromItemName, toItemName) {
@@ -111,8 +111,8 @@ const getInventoryItems = async () => {
   try {
     const inventoryItems = await Inventory.findAll({
       include: [
-        { model: Characters, attributes: ['id', 'name'] },
-        { model: Items, attributes: ['id', 'name'] },
+        { model: Characters, attributes: ['character_name'] },
+        { model: Items, attributes: ['item_name'] },
       ],
     });
     console.log(inventoryItems);
