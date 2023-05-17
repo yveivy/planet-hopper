@@ -49,6 +49,7 @@ const { Characters, Inventory, Items, Wishlist } = require('./models');
 // Import and require mysql2
 const mysql = require('mysql2');
 const config = require('./config/connection')
+const router = require('./routes/itemRoutes')
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -56,6 +57,7 @@ const app = express();
 // Express middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(router);
 
 // const sequelize = new Sequelize(config.development);
 
