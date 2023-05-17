@@ -1,5 +1,6 @@
-const { Sequelize, Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/connection');
+const { Model, DataTypes } = require('sequelize');
+const sequelize = require('../config/connection.js');
+
 
 class Characters extends Model {}
 
@@ -22,8 +23,8 @@ Characters.init(
         },
 
         bio: {
-            type: DataTypes.STRING,
-            allowNull: false,
+            type: DataTypes.STRING(500),
+            allowNull: true,
         },
 
     }, {
@@ -33,5 +34,5 @@ Characters.init(
         modelName: 'characters'
     });
 
-    module.exports = Characters
+    module.exports = Characters;
 
