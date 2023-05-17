@@ -1,3 +1,6 @@
+const { Inventory, Characters, Items } = require('../models');
+
+
 async function makeTrade(fromItemName, toItemName) {
     try {
         const mainCharacterId = 1; //this is a place holder id for the main character, it will have to update after the database is seeded.
@@ -21,6 +24,9 @@ async function showMainCharacterInventory() {
         const response = await fetch(`/inventory/${mainCharacterId}`) // don't need the template literal here but Im not 100% sure on the syntax
         const inventory = await response.json();
 
+        console.log('Response:', response);
+        console.log('Inventory:', inventory);
+
         console.log('Main Character Inventory:')
         inventory.forEach(item => {
             console.log(`- ${item.item_name}`);//instead of logging on the console, this needs to display in a container during game play. Should be a button where 
@@ -30,7 +36,7 @@ async function showMainCharacterInventory() {
     }
 }
 
-showMainCharacterInventory();
+// showMainCharacterInventory();
 
 // actually do not think we need the below function but it is there if we decide to incorporate it in gameplay.
 async function showCharacterInventory(characterId) {
@@ -99,20 +105,20 @@ async function showTradeItems(mainCharacterId, otherCharacterId) {
     }
 };
 
-// const { Inventory, Characters, Items } = require('../models');
+// showCharacterInventory();
 
-// const getInventoryItems = async () => {
-//   try {
-//     const inventoryItems = await Inventory.findAll({
-//       include: [
-//         { model: Characters, attributes: ['id', 'name'] },
-//         { model: Items, attributes: ['id', 'name'] },
-//       ],
-//     });
-//     console.log(inventoryItems);
-//   } catch (error) {
-//     console.error('Error retrieving inventory items:', error);
-//   }
-// };
+const getInventoryItems = async () => {
+  try {
+    const inventoryItems = await Inventory.findAll({
+      include: [
+        { model: Characters, attributes: ['id', 'name'] },
+        { model: Items, attributes: ['id', 'name'] },
+      ],
+    });
+    console.log(inventoryItems);
+  } catch (error) {
+    console.error('Error retrieving inventory items:', error);
+  }
+};
 
-// getInventoryItems();
+getInventoryItems();
