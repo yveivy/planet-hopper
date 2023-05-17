@@ -23,9 +23,14 @@ Characters.init(
         },
 
         bio: {
-            type: DataTypes.STRING(500),
+            type: DataTypes.TEXT,
             allowNull: true,
         },
+        bio: {
+            type: DataTypes.TEXT,
+            allowNull: true,
+        },
+
 
     }, {
         sequelize,
