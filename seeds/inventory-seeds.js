@@ -7,7 +7,7 @@ const inventoryData = [
     item_id:1,
   },
   {
-    character_id:2,
+    character_id:4,
     item_id:2,
   },
   {
@@ -61,6 +61,10 @@ const inventoryData = [
   {
     character_id:1,
     item_id:15,
+  },
+  {
+    character_id:3,
+    item_id:16,
   },
 ];
 

@@ -61,6 +61,10 @@ const itemData = [
     item_name: 'Universal Translator',
     description: `A device loaded with software that allows the traveler to understand and communicate in different alien species by translating languages and dialects in real-time. Extremely useful, for space-travel. But it is glitching and currently only translates Zork, the language of a reclusive species that hasn't been seen in eons.`,
   },
+  {
+    item_name: 'Eye of Newt',
+    description: `You don't want to know`,
+  },
  
 
 ];
