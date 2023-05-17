@@ -86,11 +86,17 @@ router.get('/character-inventory/:characterId', async (req, res) => {
     }
 }); 
 
-router.get('/biography/:characterId', async (req, res) => {
+router.get('/biography/:characterName', async (req, res) => {
+    console.log("get biography________________________")
     try {
-        const { characterId } = req.params;
+        const characterName = req.params.characterName
+        console.log("characterName___________",characterName)
 
-        const biography = await Characters.findByPk(characterId);
+        const biography = await Characters.findOne({
+            where: {
+              character_name: characterName
+            }
+        })
 
         return res.status(200).json(biography);
     } catch (error) {

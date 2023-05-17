@@ -131,13 +131,19 @@ function setInteractionModeFlag(interactionMode) {
     }
 }
 
+function fetchNpcData(npcName) {
+    fetch(`/biography/${npcname}`)
+}
+
 // var nextBtn = document.getElementById('nextButton')
-window.addEventListener('keydown', function(e) {
+window.addEventListener('keydown', async function(e) {
     if (e.key === ' ' && currentQuestionIndex == 0) {
         console.log("inputMenu.js knows it's " + interactionObject);
+        var npcDataObject = await fetchNpcData(interactionObject)
         //Todo: dataOfInteractionObject = getDataOfInteractionObject()
-        showInteractionContainer()
+
         npcBioContainer.innerHTML = `  Bio:  'insert character bio here'`
+        showInteractionContainer()
         askEitherQuestionType(interactionModeQuestion)
         currentQuestionIndex ++
     } else if (e.code === 'Enter' && currentQuestionIndex == 1) {
