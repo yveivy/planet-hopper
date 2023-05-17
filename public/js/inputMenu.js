@@ -230,10 +230,10 @@ function appendLiToDialogueBox(text) {
 }
 
 // function createReqBodyToCheckTrade (itemOfferedByUser, itemRequestedByUser) {
-    // var tradeRequestData = {
-    //     "itemOfferedByUser": itemOfferedByUser,
-    //     "itemRequestedByUser": itemRequestedByUser
-    // }
+//     var tradeRequestData = {
+//         "itemOfferedByUser": itemOfferedByUser,
+//         "itemRequestedByUser": itemRequestedByUser
+//     }
 //     return reqBody
 // }
 
