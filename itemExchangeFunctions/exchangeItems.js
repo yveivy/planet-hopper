@@ -29,6 +29,9 @@ async function showMainCharacterInventory() {
         console.error('An error occurred while retrieving the main character inventory:', error);
     }
 }
+
+showMainCharacterInventory();
+
 // actually do not think we need the below function but it is there if we decide to incorporate it in gameplay.
 async function showCharacterInventory(characterId) {
     try {
@@ -96,3 +99,20 @@ async function showTradeItems(mainCharacterId, otherCharacterId) {
     }
 };
 
+// const { Inventory, Characters, Items } = require('../models');
+
+// const getInventoryItems = async () => {
+//   try {
+//     const inventoryItems = await Inventory.findAll({
+//       include: [
+//         { model: Characters, attributes: ['id', 'name'] },
+//         { model: Items, attributes: ['id', 'name'] },
+//       ],
+//     });
+//     console.log(inventoryItems);
+//   } catch (error) {
+//     console.error('Error retrieving inventory items:', error);
+//   }
+// };
+
+// getInventoryItems();
