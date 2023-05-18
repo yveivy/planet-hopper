@@ -12,12 +12,15 @@ const sequelize = require('./config/connection');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 require('dotenv').config();
 
+const router = require('./controllers/api/gameData');
+
 const PORT = process.env.PORT || 3001;
 const app = express();
 
 // Express middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use('/api', router);
 
 
 // app.listen(PORT, () => {

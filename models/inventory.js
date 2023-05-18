@@ -28,13 +28,6 @@ Inventory.init(
       },
     },
 
-    wishlist_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'wishlist',
-        key: 'wishlist_id',
-      }
-    }
 }, { 
     sequelize,
     timestamps: false,
