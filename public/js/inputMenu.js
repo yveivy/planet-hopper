@@ -82,7 +82,6 @@ function renderCheckBoxQuestion(currentQuestion) {
 
         userInputContainer.appendChild(label);
     });
-    console.log("renderCheckBoxQuestion_______")
 }
 
 function clearUserInputContainer() {
@@ -166,9 +165,7 @@ window.addEventListener('keydown', async function(e) {
             //spaceship()
             return
         }
-        console.log("interactionObject____________", interactionObject)
         npcDataObject = await fetchNpcData(interactionObject)
-        console.log("npcDataObject_____________", npcDataObject)
         populateInteractionContainerWithNpcData(npcDataObject)
         showInteractionContainer()
         askEitherQuestionType(interactionModeQuestion)
@@ -217,16 +214,21 @@ window.addEventListener('keydown', async function(e) {
     }
 });
 
+function removeAnythingOutsideOfQuotes(unformattedStr) {
+    let str = unformattedStr.match(/"(.*?)"/g).map(item => item.slice(1, -1));
+    return str 
+}
 
 async function processChatMessage() {
     clearDialogueUl()
     clearChatInput()
     var reqObj = createChatPromptReqObj()
     var prompt = createPromptForNpcResponseToChat(reqObj)
-    var promptResponse = await fetchOpenAiApi(prompt)
-    var npcText = `NPC: ${promptResponse}`
+    var unformattedPromptResponse = await fetchOpenAiApi(prompt)
+    var promptResponse = removeAnythingOutsideOfQuotes(unformattedPromptResponse)
+    var npcText = `${npcDataObject.full_name}: "${promptResponse}"`
     dialogueList.push(npcText)
-    console.log("dialogueList__________", dialogueList)
+
     for (let line of dialogueList) {
         appendLiToDialogueBox(line)
     }
@@ -234,6 +236,7 @@ async function processChatMessage() {
 
 function formatDialogueListAsString() {
     var string = dialogueList.join("\n")
+    return string
 }
 
 function createChatPromptReqObj() {
@@ -246,7 +249,7 @@ function createChatPromptReqObj() {
         role: role,
         bio: bio,
         mostRecentMessage: mostRecentMessage,
-        // chatHistory =
+        chatHistory: chatHistory
     }
     return chatPromptReqObj
 }
@@ -264,7 +267,6 @@ async function processTradeOffer() {
 }
 
 function appendLiToDialogueBox(text) {
-    console.log("appendLiToDialogueBox__________", text)
     var li = document.createElement("li")
     li.innerHTML = text
     dialogueUl.appendChild(li)

@@ -41,21 +41,20 @@ Give me your verbal response in quotes to his offer. Don't respond with anything
 
 
 export function createPromptForNpcResponseToChat(reqObj) {
+    var role = reqObj.role
     var bio = reqObj.bio
-    var mostRecentMessage = reqObj.mostRecentMessage
-    var chatHistory =
-``
+    var chatHistory = reqObj.chatHistory
 
 var prompt = 
 `You are an npc in a scifi themed trading-oriented RPG called planet hopper. User has crash landed on your planet, and he is trying to trade with you and other NPCs to eventually get the items he needs to get off the planet. In the meantime, He is chatting you up.
 Here's a little information about you:
 Role-${role}
-Bio- "${bio}"
+Bio- ${bio}
 
 ${chatHistory}
-User: ${mostRecentMessage}
 
 Give me your verbal response in quotes to what user just said. Don't respond with anything outside the quotes, or it will mess up the program`
 
+console.log("createPromptForNpcResponseToChat_______________", prompt)
 return prompt
 }
