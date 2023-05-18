@@ -404,6 +404,7 @@ window.addEventListener('keyup', (e) => {
     } 
 })
 
+
 // window.addEventListener('keydown', function (event) {
 //     if (event.key === 'e' || event.key === 'e') {
 //     let inventoryContainer = document.getElementById('inventoryContainer');
