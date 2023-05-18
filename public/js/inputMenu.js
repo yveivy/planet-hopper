@@ -150,6 +150,7 @@ async function fetchNpcData(npcSearchableName) {
     }
 }
 
+
 function populateInteractionContainerWithNpcData(npcDataObject) {
     npcDataObject.searchable_name = 'placeholder' //!placeholder
 
@@ -221,7 +222,7 @@ async function processChatMessage() {
     clearDialogueUl()
     clearChatInput()
     var reqObj = createChatPromptReqObj()
-    var prompt = createPromptForNpcResponseToChat()
+    var prompt = createPromptForNpcResponseToChat(reqObj)
     var promptResponse = await fetchOpenAiApi(prompt)
     var npcText = `NPC: ${promptResponse}`
     dialogueList.push(npcText)
@@ -231,18 +232,23 @@ async function processChatMessage() {
     }
 }
 
+function formatDialogueListAsString() {
+    var string = dialogueList.join("\n")
+}
+
 function createChatPromptReqObj() {
+    var role = npcDataObject.role
     var bio = npcDataObject.bio
     var mostRecentMessage = chatInputValue
+    var chatHistory = formatDialogueListAsString()
 
     var chatPromptReqObj = {
-        bio = bio,
-        mostRecentMessage = mostRecentMessage,
-        npcInventory = "an art piece, a rake, and a broken shovel.",
-        userInventory = "duct tape, spaceship oil, and a rattlesnake skin."
+        role: role,
+        bio: bio,
+        mostRecentMessage: mostRecentMessage,
         // chatHistory =
     }
-    
+    return chatPromptReqObj
 }
 
 async function processTradeOffer() {
