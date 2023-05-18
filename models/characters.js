@@ -12,7 +12,12 @@ Characters.init(
             autoIncrement: true,
         },
 
-        character_name: {
+        searchable_name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+
+        full_name: {
             type: DataTypes.STRING,
             allowNull: false,
         },

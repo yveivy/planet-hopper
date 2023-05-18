@@ -89,6 +89,7 @@ router.get('/character-inventory/:characterItems', async (req, res) => {
     }
 });
 
+<<<<<<< HEAD:controllers/api/itemRoutes.js
 
 router.get('/biography/:characterName', async (req, res) => {
     try {
@@ -98,8 +99,22 @@ router.get('/biography/:characterName', async (req, res) => {
             where: { character_name: characterName },
 
         });
+=======
+router.get('/biography/:searchableName', async (req, res) => {
+    console.log("get biography________________________")
+    try {
+        const searchableName = req.params.searchableName
+        console.log("searchableName___________",searchableName)
 
-        return res.status(200).json(biography);
+        const data = await Characters.findOne({
+            where: {
+              searchable_name: searchableName
+            }
+        })
+        console.log('data___________',data.dataValues)
+>>>>>>> b72503926b6130be00d42312598513fd49bbf6d1:controllers/api/gameData.js
+
+        return res.status(200).json(data.dataValues);
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'Internal server error' });
