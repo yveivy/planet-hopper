@@ -13,23 +13,83 @@ router.put('/test', (req, res) => {
     res.send('Test put route is working')
 })
 
-router.put('/trade/:fromCharacterId/:fromItemId/:toCharacterId/:toItemId', async (req, res) => {
+
+//this restricts trade for the specified game items that meet the games objective and doesn't allow trade of other items.
+router.put('/trade/:item1/:item2', async (req, res) => {
     try {
-        const { fromCharacterId, fromItemId, toCharacterId, toItemId } = req.params;
+        const { item1, item2 } = req.params;
 
-        // Save original items first
-        const originalFromItem = await Inventory.findOne({ where: { character_id: fromCharacterId, item_id: fromItemId } });
-        const originalToItem = await Inventory.findOne({ where: { character_id: toCharacterId, item_id: toItemId } });
+        if (
+            (item1 === '10' && (item2 === '1' || item2 === '12')) 
+        ) {
+            // Save original items first
+            const originalItem1 = await Inventory.findOne({ where: { item_id: item1 } });
+            const originalItem2 = await Inventory.findOne({ where: { item_id: item2 } });
 
-        if (!originalFromItem || !originalToItem) {
-            return res.status(404).json({ message: 'One or both of the items do not exist' });
+            // Swap the items
+            await originalItem1.update({ item_id: item2 });
+            await originalItem2.update({ item_id: item1 });
+
+            return res.status(200).json({ message: 'Items exchanged successfully' });
+        } 
+
+        if (
+            (item1 === '12' && (item2 === '10' || item2 === '8')) 
+        ) {
+            // Save original items first
+            const originalItem1 = await Inventory.findOne({ where: { item_id: item1 } });
+            const originalItem2 = await Inventory.findOne({ where: { item_id: item2 } });
+
+            // Swap the items
+            await originalItem1.update({ item_id: item2 });
+            await originalItem2.update({ item_id: item1 });
+
+            return res.status(200).json({ message: 'Items exchanged successfully' });
         }
 
-        // Update the items
-        await originalFromItem.update({ character_id: toCharacterId });
-        await originalToItem.update({ character_id: fromCharacterId });
+        if (
+            (item1 === '8' && (item2 === '12' || item2 === '13')) 
+        ) {
+            // Save original items first
+            const originalItem1 = await Inventory.findOne({ where: { item_id: item1 } });
+            const originalItem2 = await Inventory.findOne({ where: { item_id: item2 } });
 
-        return res.status(200).json({ message: 'Items exchanged successfully' });
+            // Swap the items
+            await originalItem1.update({ item_id: item2 });
+            await originalItem2.update({ item_id: item1 });
+
+            return res.status(200).json({ message: 'Items exchanged successfully' });
+        }
+
+        if (
+            (item1 === '6' && item2 === '3')
+        ) {
+            // Save original items first
+            const originalItem1 = await Inventory.findOne({ where: { item_id: item1 } });
+            const originalItem2 = await Inventory.findOne({ where: { item_id: item2 } });
+
+            // Swap the items
+            await originalItem1.update({ item_id: item2 });
+            await originalItem2.update({ item_id: item1 });
+
+            return res.status(200).json({ message: 'Items exchanged successfully' });
+        } 
+
+        if (
+            (item1 === '15' && item2 === '13')  
+        ) {
+            // Save original items first
+            const originalItem1 = await Inventory.findOne({ where: { item_id: item1 } });
+            const originalItem2 = await Inventory.findOne({ where: { item_id: item2 } });
+
+            // Swap the items
+            await originalItem1.update({ item_id: item2 });
+            await originalItem2.update({ item_id: item1 });
+
+            return res.status(200).json({ message: 'Items exchanged successfully' });
+        } 
+        // No valid trade condition matched, so no trade is allowed
+        return res.status(400).json({ message: 'Sorry, no trade!' });
 
     } catch (error) {
         console.error(error);
@@ -38,115 +98,52 @@ router.put('/trade/:fromCharacterId/:fromItemId/:toCharacterId/:toItemId', async
 });
 
 
-// router.put('/trade/:fromCharacterId/:fromItemId/:toCharacterId/:toItemId', async (req, res) => {
-//     try {
-//         const { fromCharacterId, fromItemId, toCharacterId, toItemId } = req.params;
-
-//         // Save original items first
-//         const originalFromItem = await Inventory.findOne({ where: { character_id: fromCharacterId, item_id: fromItemId } });
-//         const originalToItem = await Inventory.findOne({ where: { character_id: toCharacterId, item_id: toItemId } });
-
-//         if (!originalFromItem || !originalToItem) {
-//             return res.status(404).json({ message: 'One or both of the items do not exist' });
-//         }
-
-//         // Update the items
-//         await Promise.all([
-//             Inventory.update(
-//                 { character_id: toCharacterId, item_id: toItemId },
-//                 { where: { character_id: fromCharacterId, item_id: fromItemId } }
-//             ),
-//             Inventory.update(
-//                 { character_id: fromCharacterId, item_id: fromItemId },
-//                 { where: { character_id: toCharacterId, item_id: toItemId } }
-//             ),
-//         ]);
-
-//         return res.status(200).json({ message: 'Items exchanged successfully' });
-
-//     } catch (error) {
-//         console.error(error);
-//         return res.status(500).json({ error: 'Internal server error' });
-//     }
-// });
-
-// router.put('/trade/:fromCharacterId/:fromItemId/:toCharacterId/:toItemId', async (req, res) => {
-//     const transaction = await sequelize.transaction();
-//     try {
-//         const { fromCharacterId, fromItemId, toCharacterId, toItemId } = req.params;
-
-//         await Inventory.update(
-//             { character_id: toCharacterId, item_id: toItemId },
-//             { where: { character_id: fromCharacterId, item_id: fromItemId } }, { transaction }
-//         ),
-
-//         await Inventory.update(
-//              { character_id: fromCharacterId, item_id: fromItemId },
-//              { where: { character_id: toCharacterId, item_id: toItemId } }
-//          );
-
-
-//         await transaction.commit();
-
-
-
-//         return res.status(200).json({ message: 'Items exchanged successfully' });
-
-//         } catch (error) {
-
-//         await transaction.rollback();
-//         console.error(error);
-//         return res.status(500).json({ error: 'Internal server error' });
-//         }
-//     }); 
-
-
-//GET route for retrieving the main character's inventory
-// router.get('/inventory/character_name', async (req, res) => {
-//     try {
-//         const { mainCharacterId } = req.params;
-
-//         const inventory = await Inventory.findAll({
-//             where: { character_id: mainCharacterId },
-//             include: [
-//                 {
-//                     model: Characters,
-//                     attributes: ['character_name']
-//                 },
-
-//                 {
-//                     model: Items,
-//                     attributes: ['item_name','description']
-
-//                 },
-//             ],
-//         });
-
-//         return res.status(200).json(inventory);
-//     } catch (error) {
-//         console.error(error);
-//         return res.status(500).json({ error: 'Internal server error' });
-//     }
-// });
-
-//GET route for retrieving a character's inventory
+// pulls up the inventory for each character by character name
 router.get('/inventory/:character', async (req, res) => {
     try {
-        const {character} = req.params;
+        const { character } = req.params;
 
         const inventory = await Inventory.findAll({
-            attributes: {exclude: ['id','character_id','item_id']},
+            attributes: { exclude: ['id', 'character_id', 'item_id'] },
             include: [
                 {
                     model: Characters,
                     where: { searchable_name: character },
-                    attributes: { exclude: ['character_id', 'searchable_name', 'full_name', 'role', 'bio']}
+                    attributes: { exclude: ['character_id', 'searchable_name', 'full_name', 'role', 'bio'] }
                 },
 
                 {
                     model: Items,
-                    attributes: {exclude: ['item_id',]} 
-                  
+                    attributes: { exclude: ['item_id', 'searchable_item'] }
+
+                },
+            ],
+        });
+
+        return res.status(200).json(inventory);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
+//Complete list of characters and their current inventories
+router.get('/inventory', async (req, res) => {
+    try {
+
+        const inventory = await Inventory.findAll({
+            attributes: { exclude: ['id', 'character_id', 'item_id'] },
+            include: [
+                {
+                    model: Characters,
+                    attributes: { exclude: ['character_id', 'searchable_name', 'role', 'bio'] }
+                },
+
+                {
+                    model: Items,
+                    attributes: { exclude: ['item_id', 'searchable_item'] }
+
                 },
             ],
         });
@@ -165,7 +162,7 @@ router.get('/biography/:searchableName', async (req, res) => {
         console.log("searchableName___________", searchableName)
 
         const data = await Characters.findOne({
-            attributes: {exclude: ['character_id','searchable_name']},
+            attributes: { exclude: ['character_id', 'searchable_name'] },
             where: {
                 searchable_name: searchableName
             }
@@ -179,15 +176,16 @@ router.get('/biography/:searchableName', async (req, res) => {
     }
 });
 //get item name and description by item name
-router.get('/item/:searchableName', async (req, res) => {
+router.get('/item/:searchableItem', async (req, res) => {
     console.log("get item________________________")
     try {
-        const searchableName = req.params.searchableName
-        console.log("searchableName___________", searchableName)
+        const searchableItem = req.params.searchableItem
+        console.log("searchableItem___________", searchableItem)
 
         const data = await Items.findOne({
+            attributes: { exclude: ['item_id', 'searchable_item'] },
             where: {
-                searchable_name: searchableName
+                searchable_item: searchableItem
             }
         })
         console.log('data___________', data.dataValues)
@@ -199,11 +197,16 @@ router.get('/item/:searchableName', async (req, res) => {
     }
 });
 
+// get a list of all items and their descriptions
 router.get('/items', async (req, res) => {
     console.log("get items________________________")
     try {
-        const items = await Items.findAll();
-        console.log("items___________", items)
+        const items = await Items.findAll({
+            attributes: { exclude: ['item_id', 'searchable_item'] },
+            
+
+
+        });
 
         return res.status(200).json(items);
     } catch (error) {
@@ -211,8 +214,6 @@ router.get('/items', async (req, res) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 });
-
-
 
 
 module.exports = router;
