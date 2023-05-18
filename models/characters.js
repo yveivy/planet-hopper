@@ -31,12 +31,6 @@ Characters.init(
             type: DataTypes.TEXT,
             allowNull: true,
         },
-        bio: {
-            type: DataTypes.TEXT,
-            allowNull: true,
-        },
-
-
     }, {
         sequelize,
         timestamps: false,

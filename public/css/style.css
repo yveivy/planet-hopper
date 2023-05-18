@@ -2,10 +2,19 @@
   --interactionSubDivHeight: 100%
 }
 
+@font-face {
+  font-family: 'Press Start 2P';
+  src: url('PressStart2P-Regular.woff2') format('woff2'),
+    url('PressStart2P-Regular.woff') format('woff');
+  font-style: normal;
+  font-display: swap;
+}
+
 body {
   background: #000000;
   display: flex;
   flex-direction: column;
+  font-family: 'Press Start 2P', monospace;
 }
 
 header {
@@ -123,7 +132,7 @@ ul {
   display: flex;
   flex-direction: column;
   width: 33.3%; 
-  height: var(--interactionSubDivHeight); 
+  height: var(--interactionSubDivHeight);
 }
 #npcHeadshotContainer {
   background: no-repeat center center; 
@@ -142,7 +151,8 @@ ul {
   height: 49.95%;
 }
 #npcBioContainer {
-  height: 33.3%
+  height: 33.3%;
+  font-size: 12px;
 }
 
 

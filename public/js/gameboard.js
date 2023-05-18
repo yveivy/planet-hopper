@@ -409,6 +409,7 @@ window.addEventListener('keyup', (e) => {
     }
 })
 
+
 // window.addEventListener('keydown', function (event) {
 //     if (event.key === 'e' || event.key === 'e') {
 //     let inventoryContainer = document.getElementById('inventoryContainer');
@@ -456,6 +457,7 @@ function animateTheIntroZoom() {
             window.location.href = "/game";
         }
     });
+
 }
 //i know this looks like a mess but i spent at least an hour trying to get this to run every other way.  
 
@@ -512,3 +514,6 @@ function endGame() {
     startSlideshow();
 }
 //endGame()
+
+
+
