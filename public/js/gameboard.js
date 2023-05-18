@@ -41,7 +41,7 @@ colArrMap.forEach((row, j) => {
                 }))
     })
 });
-const interactionZoneMap = []
+const interactionZoneMap = [] 
 for (let i = 0; i < interactionArrData.length; i += 60) {
     interactionZoneMap
 .push(interactionArrData.slice(i, 60 + i)) 
@@ -71,7 +71,17 @@ interactionZoneMap.forEach((row, j) => {
                     }
                 })
             );
-        } else if (symbol === 5050) {
+        }else if (symbol === 1010) {
+            interactions.push(
+                new Boundary({
+                    position: {
+                        value: symbol, 
+                        x: k * Boundary.width + offsetBoundary.x,  
+                        y: j * Boundary.height + offsetBoundary.y
+                    }
+                })
+            );}
+         else if (symbol === 5050) {
             interactions.push(
                 new Boundary({
                     position: {
@@ -226,22 +236,22 @@ foreground.draw()
                 
 
                     console.log("Interacting with Zara");
-                    interactionObject = "1"
+                    interactionObject = "zara-sparks"
                 } else if (interaction.position.value === 6060) {
                     console.log("Interacting with Beryl and Basil Hydra");
-                    interactionObject = "2"
+                    interactionObject = "beryl-and-basil-hydra"
                 } else if (interaction.position.value === 3030) {
                     console.log("Interacting with Abe");
-                    interactionObject = "3"
+                    interactionObject = "abe-harmony"
                 } else if (interaction.position.value === 2020) {
                     console.log("Interacting with Sketchy Schemer");
-                    interactionObject = "4"
+                    interactionObject = "shady-schemer"
                 } else if (interaction.position.value === 1010) {
                     console.log("Interacting with Taylor");
-                    interactionObject = "5"
+                    interactionObject = "taylor-tuck"
                 } else if (interaction.position.value === 5050) {
                     console.log("Interacting with Violet");
-                    interactionObject = "6"
+                    interactionObject = "violet-meadows"
                 }
                 break;
             }
@@ -404,3 +414,31 @@ window.addEventListener('keyup', (e) => {
 //     }
 // }
 // });
+
+
+
+function animateTheIntroZoom() {
+    var tl = gsap.timeline();
+
+    // Add animation for #intro element
+    tl.to("#infoButton", {
+      opacity: 0,
+      duration: 1
+    });
+
+    // Add animation for #startGame element
+    tl.to("#startGame", {
+      opacity: 0,
+      duration: 1
+    });
+
+    // Add animation for #handheldNintendo element
+    tl.to("#handheldNintendo", {
+      duration: 3,
+      scale: 3,
+      opacity: 0,
+      onComplete: function() {
+        window.location.href = "/game";
+      }
+    });
+  }

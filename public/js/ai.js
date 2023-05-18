@@ -42,7 +42,7 @@ Give me your verbal response in quotes to his offer. Don't respond with anything
 
 export function createPromptForNpcResponseToChat() {
     var bio = "You are a 3rd generation farmer and a really gruff woman"
-    var chatMessage = "Do you like living on this planet?"
+    var mostRecentMessage = "Do you like living on this planet?"
     var inventory = "an art piece, a rake, and a broken shovel."
     var userInventory = "duct tape, spaceship oil, and a rattlesnake skin."
     var chatHistory =
@@ -56,7 +56,7 @@ Inventory: You have ${inventory}
 The user has ${userInventory}
 
 ${chatHistory}
-User: ${chatMessage}
+User: ${mostRecentMessage}
 
 Give me your verbal response in quotes to what he just said. Don't respond with anything outside the quotes, or it will mess up the program`
 
