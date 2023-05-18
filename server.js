@@ -12,7 +12,7 @@ const sequelize = require('./config/connection');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 require('dotenv').config();
 
-const router = require('./controllers/api/itemRoutes')
+const router = require('./controllers/api/itemRoutes');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
