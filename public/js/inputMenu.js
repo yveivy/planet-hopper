@@ -101,6 +101,14 @@ function createQuestionText(currentQuestion) {
     return questionText
 }
 
+function disableWASD() {
+    WASDenabled = false;
+}
+
+function enableWASD() {
+    WASDenabled = true
+}
+
 function showInteractionContainer() {
     interactionContainer.style.display = 'flex';
 }
@@ -161,6 +169,7 @@ function populateInteractionContainerWithNpcData(npcDataObject) {
 // var nextBtn = document.getElementById('nextButton')
 window.addEventListener('keydown', async function(e) {
     if (e.key === ' ' && currentQuestionIndex == 0) {
+        disableWASD()
         if (interactionObject == 'spaceship') {
             console.log("pressed spacebar while in the spaceship area === ")
 
@@ -215,6 +224,7 @@ window.addEventListener('keydown', async function(e) {
         processTradeOffer()
     } else if (e.code === 'Escape' && currentQuestionIndex > 0) {
         finishInteraction()
+        enableWASD()
     }
 });
 
