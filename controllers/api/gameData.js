@@ -86,13 +86,20 @@ router.get('/character-inventory/:characterId', async (req, res) => {
     }
 }); 
 
-router.get('/biography/:characterId', async (req, res) => {
+router.get('/biography/:searchableName', async (req, res) => {
+    console.log("get biography________________________")
     try {
-        const { characterId } = req.params;
+        const searchableName = req.params.searchableName
+        console.log("searchableName___________",searchableName)
 
-        const biography = await Characters.findByPk(characterId);
+        const data = await Characters.findOne({
+            where: {
+              searchable_name: searchableName
+            }
+        })
+        console.log('data___________',data.dataValues)
 
-        return res.status(200).json(biography);
+        return res.status(200).json(data.dataValues);
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'Internal server error' });
