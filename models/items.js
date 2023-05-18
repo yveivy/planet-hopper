@@ -11,6 +11,12 @@ Items.init(
             autoIncrement: true,
         },
 
+        searchable_item: {
+            type: DataTypes.STRING,
+            allowNull: false,
+
+        },
+
         item_name: {
             type: DataTypes.STRING,
             allowNull: false,
