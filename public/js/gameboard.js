@@ -41,7 +41,7 @@ colArrMap.forEach((row, j) => {
                 }))
     })
 });
-const interactionZoneMap = []
+const interactionZoneMap = [] 
 for (let i = 0; i < interactionArrData.length; i += 60) {
     interactionZoneMap
 .push(interactionArrData.slice(i, 60 + i)) 
@@ -71,7 +71,17 @@ interactionZoneMap.forEach((row, j) => {
                     }
                 })
             );
-        } else if (symbol === 5050) {
+        }else if (symbol === 1010) {
+            interactions.push(
+                new Boundary({
+                    position: {
+                        value: symbol, 
+                        x: k * Boundary.width + offsetBoundary.x,  
+                        y: j * Boundary.height + offsetBoundary.y
+                    }
+                })
+            );}
+         else if (symbol === 5050) {
             interactions.push(
                 new Boundary({
                     position: {
@@ -404,3 +414,31 @@ window.addEventListener('keyup', (e) => {
 //     }
 // }
 // });
+
+
+
+function animateTheIntroZoom() {
+    var tl = gsap.timeline();
+
+    // Add animation for #intro element
+    tl.to("#infoButton", {
+      opacity: 0,
+      duration: 1
+    });
+
+    // Add animation for #startGame element
+    tl.to("#startGame", {
+      opacity: 0,
+      duration: 1
+    });
+
+    // Add animation for #handheldNintendo element
+    tl.to("#handheldNintendo", {
+      duration: 3,
+      scale: 3,
+      opacity: 0,
+      onComplete: function() {
+        window.location.href = "/game";
+      }
+    });
+  }

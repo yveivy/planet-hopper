@@ -14,14 +14,19 @@
     <h1>Planet Hopper</h1>
     <div id="handheldNintendoContainer">
         <img id="handheldNintendo" src="../images/handheldNintendo.png">
-        <a href="/game">
-            <button id="startGame">Start</button>
+        <a>
+            <button id="startGame" onclick= "animateTheIntroZoom()">Start</button>
         </a>
-        <a href="/info">
+        <a id="infoButton" href="/info">
             <button id="info">Info</button>
         </a>
     </div>
   </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"
+  integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>"
+  <script src="js/gameboard.js"></script>
 </body>
 
 </html>
