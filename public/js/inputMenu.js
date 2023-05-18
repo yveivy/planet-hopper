@@ -82,7 +82,6 @@ function renderCheckBoxQuestion(currentQuestion) {
 
         userInputContainer.appendChild(label);
     });
-    console.log("renderCheckBoxQuestion_______")
 }
 
 function clearUserInputContainer() {
@@ -150,6 +149,7 @@ async function fetchNpcData(npcSearchableName) {
     }
 }
 
+
 function populateInteractionContainerWithNpcData(npcDataObject) {
     npcDataObject.searchable_name = 'placeholder' //!placeholder
 
@@ -165,9 +165,7 @@ window.addEventListener('keydown', async function(e) {
             //spaceship()
             return
         }
-        console.log("interactionObject____________", interactionObject)
         npcDataObject = await fetchNpcData(interactionObject)
-        console.log("npcDataObject_____________", npcDataObject)
         populateInteractionContainerWithNpcData(npcDataObject)
         showInteractionContainer()
         askEitherQuestionType(interactionModeQuestion)
@@ -216,33 +214,44 @@ window.addEventListener('keydown', async function(e) {
     }
 });
 
+function removeAnythingOutsideOfQuotes(unformattedStr) {
+    let str = unformattedStr.match(/"(.*?)"/g).map(item => item.slice(1, -1));
+    return str 
+}
 
 async function processChatMessage() {
     clearDialogueUl()
     clearChatInput()
     var reqObj = createChatPromptReqObj()
-    var prompt = createPromptForNpcResponseToChat()
-    var promptResponse = await fetchOpenAiApi(prompt)
-    var npcText = `NPC: ${promptResponse}`
+    var prompt = createPromptForNpcResponseToChat(reqObj)
+    var unformattedPromptResponse = await fetchOpenAiApi(prompt)
+    var promptResponse = removeAnythingOutsideOfQuotes(unformattedPromptResponse)
+    var npcText = `${npcDataObject.full_name}: "${promptResponse}"`
     dialogueList.push(npcText)
-    console.log("dialogueList__________", dialogueList)
+
     for (let line of dialogueList) {
         appendLiToDialogueBox(line)
     }
 }
 
+function formatDialogueListAsString() {
+    var string = dialogueList.join("\n")
+    return string
+}
+
 function createChatPromptReqObj() {
+    var role = npcDataObject.role
     var bio = npcDataObject.bio
     var mostRecentMessage = chatInputValue
+    var chatHistory = formatDialogueListAsString()
 
     var chatPromptReqObj = {
-        bio = bio,
-        mostRecentMessage = mostRecentMessage,
-        npcInventory = "an art piece, a rake, and a broken shovel.",
-        userInventory = "duct tape, spaceship oil, and a rattlesnake skin."
-        // chatHistory =
+        role: role,
+        bio: bio,
+        mostRecentMessage: mostRecentMessage,
+        chatHistory: chatHistory
     }
-    
+    return chatPromptReqObj
 }
 
 async function processTradeOffer() {
@@ -258,7 +267,6 @@ async function processTradeOffer() {
 }
 
 function appendLiToDialogueBox(text) {
-    console.log("appendLiToDialogueBox__________", text)
     var li = document.createElement("li")
     li.innerHTML = text
     dialogueUl.appendChild(li)
