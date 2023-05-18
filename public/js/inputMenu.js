@@ -214,14 +214,19 @@ window.addEventListener('keydown', async function(e) {
     }
 });
 
+function removeAnythingOutsideOfQuotes(unformattedStr) {
+    let str = unformattedStr.match(/"(.*?)"/g).map(item => item.slice(1, -1));
+    return str 
+}
 
 async function processChatMessage() {
     clearDialogueUl()
     clearChatInput()
     var reqObj = createChatPromptReqObj()
     var prompt = createPromptForNpcResponseToChat(reqObj)
-    var promptResponse = await fetchOpenAiApi(prompt)
-    var npcText = `NPC: ${promptResponse}`
+    var unformattedPromptResponse = await fetchOpenAiApi(prompt)
+    var promptResponse = removeAnythingOutsideOfQuotes(unformattedPromptResponse)
+    var npcText = `${npcDataObject.full_name}: "${promptResponse}"`
     dialogueList.push(npcText)
 
     for (let line of dialogueList) {
