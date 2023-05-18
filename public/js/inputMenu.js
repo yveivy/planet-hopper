@@ -162,7 +162,11 @@ function populateInteractionContainerWithNpcData(npcDataObject) {
 window.addEventListener('keydown', async function(e) {
     if (e.key === ' ' && currentQuestionIndex == 0) {
         if (interactionObject == 'spaceship') {
-            //spaceship()
+            console.log("pressed spacebar while in the spaceship area === ")
+
+
+
+
             return
         }
         npcDataObject = await fetchNpcData(interactionObject)

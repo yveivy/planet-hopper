@@ -61,6 +61,15 @@ ul {
   position:absolute;
   z-index: 1;
 }
+.image-container {
+  position: absolute;
+  z-index: 2; /* Increase the z-index to make images appear in front of the canvas */
+}
+
+.image-container img {
+  height: 576px;
+  width: 1024px;
+}
 
 #inventoryContainer {
   background: rgb(155, 12, 12);
@@ -147,5 +156,7 @@ ul {
 }
 
 
-
+.image-container {
+  opacity: 0; 
+}
 
