@@ -1,5 +1,6 @@
-const { Sequelize, Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/connection');
+const { Model, DataTypes } = require('sequelize');
+const sequelize = require('../config/connection.js');
+
 
 class Characters extends Model {}
 
@@ -11,7 +12,12 @@ Characters.init(
             autoIncrement: true,
         },
 
-        character_name: {
+        searchable_name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+
+        full_name: {
             type: DataTypes.STRING,
             allowNull: false,
         },
@@ -22,9 +28,14 @@ Characters.init(
         },
 
         bio: {
-            type: DataTypes.STRING,
-            allowNull: false,
+            type: DataTypes.TEXT,
+            allowNull: true,
         },
+        bio: {
+            type: DataTypes.TEXT,
+            allowNull: true,
+        },
+
 
     }, {
         sequelize,
@@ -33,5 +44,5 @@ Characters.init(
         modelName: 'characters'
     });
 
-    module.exports = Characters
+    module.exports = Characters;
 

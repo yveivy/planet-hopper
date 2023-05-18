@@ -117,7 +117,7 @@ ul {
   height: var(--interactionSubDivHeight); 
 }
 #npcHeadshotContainer {
-  background: url('https://tinyurl.com/f64x4z2h') no-repeat center center; 
+  background: no-repeat center center; 
   background-size: cover;
 }
 #npcNameContainer, #npcBioContainer, #npcHeadshotContainer {

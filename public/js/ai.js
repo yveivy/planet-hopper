@@ -27,6 +27,7 @@ export function createPromptForNpcResponseToTradeRequest() {
 var prompt = 
 `You are an npc in a scifi themed bartering RPG called planet hopper. User has crash landed on your planet, and he is trying to trade with you and other NPCs to eventually get the items he needs to get off the planet. The different NPCs value items differently depending on their personal preferences. Their personal preferences regarding various items will alter their willingness to accept the user's offers to trade.
 Here's a little information about you:
+Role-${role}
 Bio- ${bio}.
 Item attitudes- You really value ${valuedItems}. You don't value ${nonValuedItems} very much. You need ${itemNeededAndReasonWhy}.
 Inventory: You have ${inventory}
@@ -41,7 +42,7 @@ Give me your verbal response in quotes to his offer. Don't respond with anything
 
 export function createPromptForNpcResponseToChat() {
     var bio = "You are a 3rd generation farmer and a really gruff woman"
-    var chatMessage = "Do you like living on this planet?"
+    var mostRecentMessage = "Do you like living on this planet?"
     var inventory = "an art piece, a rake, and a broken shovel."
     var userInventory = "duct tape, spaceship oil, and a rattlesnake skin."
     var chatHistory =
@@ -55,7 +56,7 @@ Inventory: You have ${inventory}
 The user has ${userInventory}
 
 ${chatHistory}
-User: ${chatMessage}
+User: ${mostRecentMessage}
 
 Give me your verbal response in quotes to what he just said. Don't respond with anything outside the quotes, or it will mess up the program`
 

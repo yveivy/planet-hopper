@@ -5,7 +5,7 @@ const backgroundImage = new Image();
 backgroundImage.src = './images/MapProjectZoomedPng.png';
 canvas.width = 1024;
 canvas.height = 576;
-
+let interactionObject = []
 // gsap.to("#myImage", { duration: 1, opacity: 1 });
 
 
@@ -235,24 +235,24 @@ foreground.draw()
                 if (interaction.position.value === 4750) {
                 
 
-                    console.log("Interacting with symbol 4750");
-                    
-                } else if (interaction.position.value === 2020) {
-                    console.log("Interacting with symbol 2020");
-                    
-                } else if (interaction.position.value === 5050) {
-                    console.log("Interacting with symbol 5050");
-                   
+                    console.log("Interacting with Zara");
+                    interactionObject = "zara-sparks"
                 } else if (interaction.position.value === 6060) {
-                    console.log("Interacting with symbol 6060");
-                   
+                    console.log("Interacting with Beryl and Basil Hydra");
+                    interactionObject = "beryl-and-basil-hydra"
                 } else if (interaction.position.value === 3030) {
-                    console.log("Interacting with symbol 3030");
-                    
+                    console.log("Interacting with Abe");
+                    interactionObject = "abe-harmony"
+                } else if (interaction.position.value === 2020) {
+                    console.log("Interacting with Sketchy Schemer");
+                    interactionObject = "shady-schemer"
                 } else if (interaction.position.value === 1010) {
-                    console.log("Interacting with symbol 1010");
-                    
-                } 
+                    console.log("Interacting with Taylor");
+                    interactionObject = "taylor-tuck"
+                } else if (interaction.position.value === 5050) {
+                    console.log("Interacting with Violet");
+                    interactionObject = "violet-meadows"
+                }
                 break;
             }
         }

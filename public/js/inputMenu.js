@@ -1,5 +1,6 @@
 import { fetchOpenAiApi, createPromptForNpcResponseToTradeRequest, createPromptForNpcResponseToChat } from './ai.js';
 
+
 var userInventory = ['duct tape', 'rusty knife', 'hair gel']
 var inventoryOfThisNpc = ['wrench', 'screws', 'shoelace']
 
@@ -13,6 +14,7 @@ var chat = false
 var currentQuestionIndex = 0;
 var dialogueList = []
 var tradeRequestData = {}
+var npcDataObject = {}
 var chatInputValue;
 
 
@@ -20,6 +22,9 @@ var interactionContainer = document.getElementById('interactionContainer');
 var userInputContainer = document.getElementById('userInputContainer');
 var dialogueContainer = document.getElementById('dialogueContainer');
 var dialogueUl = document.getElementById('dialogueUl');
+var npcBioContainer = document.getElementById('npcBioContainer')
+var npcNameEl = document.querySelector("#npcName")
+var npcHeadshotContainer = document.querySelector("#npcHeadshotContainer")
 
 function getRadioInputValue() {
     let radios = document.querySelectorAll('[name="choice"]');
@@ -111,6 +116,7 @@ function finishInteraction() {
     chat = false
     dialogueList = []
     tradeRequestData = {}
+    npcDataObject = {}
     chatInputValue = ''
     clearDialogueUl()
     clearUserInputContainer()
@@ -129,11 +135,40 @@ function setInteractionModeFlag(interactionMode) {
     }
 }
 
+async function fetchNpcData(npcSearchableName) {
+    try {
+        const response = await fetch(`/api/gamedata/biography/${npcSearchableName}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const npcData = await response.json();
+        return npcData;
+    } catch (e) {
+        console.log('There was a problem with your fetch operation: ' + e.message);
+    }
+}
+
+function populateInteractionContainerWithNpcData(npcDataObject) {
+    npcDataObject.searchable_name = 'placeholder' //!placeholder
+
+    npcNameEl.innerHTML = npcDataObject.full_name
+    npcHeadshotContainer.style.backgroundImage = `url('../images/characterHeadshots/${npcDataObject.searchable_name}.png')`
+    npcBioContainer.innerHTML = `Bio:  ${npcDataObject.bio}`
+}
+
 // var nextBtn = document.getElementById('nextButton')
-window.addEventListener('keydown', function(e) {
+window.addEventListener('keydown', async function(e) {
     if (e.key === ' ' && currentQuestionIndex == 0) {
-        //Todo: var interactionObject = identifyInteractionObject()
-        //Todo: dataOfInteractionObject = getDataOfInteractionObject()
+        if (interactionObject == 'spaceship') {
+            //spaceship()
+            return
+        }
+        console.log("interactionObject____________", interactionObject)
+        npcDataObject = await fetchNpcData(interactionObject)
+        console.log("npcDataObject_____________", npcDataObject)
+        populateInteractionContainerWithNpcData(npcDataObject)
         showInteractionContainer()
         askEitherQuestionType(interactionModeQuestion)
         currentQuestionIndex ++
@@ -181,19 +216,11 @@ window.addEventListener('keydown', function(e) {
     }
 });
 
-window.addEventListener('keydown', async function(e) {
-    if (e.key === 'q') {
-        console.log("retrievingPromptResponse__________")
-        var promptResponse = await retrievePromptResponse()
-        console.log("Q key event listener: promptResponse__________",promptResponse)
-    }
-
-});
-
 
 async function processChatMessage() {
     clearDialogueUl()
     clearChatInput()
+    var reqObj = createChatPromptReqObj()
     var prompt = createPromptForNpcResponseToChat()
     var promptResponse = await fetchOpenAiApi(prompt)
     var npcText = `NPC: ${promptResponse}`
@@ -202,9 +229,20 @@ async function processChatMessage() {
     for (let line of dialogueList) {
         appendLiToDialogueBox(line)
     }
+}
+
+function createChatPromptReqObj() {
+    var bio = npcDataObject.bio
+    var mostRecentMessage = chatInputValue
+
+    var chatPromptReqObj = {
+        bio = bio,
+        mostRecentMessage = mostRecentMessage,
+        npcInventory = "an art piece, a rake, and a broken shovel.",
+        userInventory = "duct tape, spaceship oil, and a rattlesnake skin."
+        // chatHistory =
+    }
     
-    // clearUserInputContainer()
-    // appendTradeOfferSummaryToUserInputContainer:
 }
 
 async function processTradeOffer() {
@@ -227,10 +265,10 @@ function appendLiToDialogueBox(text) {
 }
 
 // function createReqBodyToCheckTrade (itemOfferedByUser, itemRequestedByUser) {
-    // var tradeRequestData = {
-    //     "itemOfferedByUser": itemOfferedByUser,
-    //     "itemRequestedByUser": itemRequestedByUser
-    // }
+//     var tradeRequestData = {
+//         "itemOfferedByUser": itemOfferedByUser,
+//         "itemRequestedByUser": itemRequestedByUser
+//     }
 //     return reqBody
 // }
 
