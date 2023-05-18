@@ -14,6 +14,7 @@ var npcInventoryObjArray = []
 var userInventoryObjArray = []
 var userInventoryItems = []
 var chatInputValue;
+var tradeOfferDecision;
 
 const interactionModeQuestion = { type: "radio", text: "", choices: ["Trade", "Chat"], when: true }
 const offerQuestion = { type: "radio", text: "Offer to trade your:", choices: [...userInventoryItems], when: trade}
@@ -132,7 +133,7 @@ function finishInteraction() {
     userInventoryObjArray = []
     userInventoryItems = []
     chatInputValue = ''
-    interactionObject = false
+    // interactionObject = false
     clearDialogueUl()
     clearUserInputContainer()
     hideInteractionContainer()
@@ -212,13 +213,11 @@ window.addEventListener('keydown', async function(e) {
             console.log("pressed spacebar while in the spaceship area === ")
 
 
-
-
             return
         }
-        if (!interactionObject) {
-            return
-        }
+        // if (!interactionObject) {
+        //     return
+        // }
         retrieveInventoryData()
         npcDataObject = await fetchCharacterData(interactionObject)
         populateInteractionContainerWithNpcData(npcDataObject)
@@ -250,7 +249,6 @@ window.addEventListener('keydown', async function(e) {
         currentQuestionIndex ++
         processChatMessage(chatInputValue)
     } else if (e.code === 'Enter' && trade && currentQuestionIndex == 2) {
-        console.log('EventListener() itemOfferedByUser selected; userInventoryItems________',userInventoryItems)
         tradeRequestData.itemOfferedByUser = getRadioInputValue()
         if (!tradeRequestData.itemOfferedByUser) {
             console.log("Tried to press enter before any input option selected")
@@ -261,7 +259,6 @@ window.addEventListener('keydown', async function(e) {
         renderInventoryItemDetailsInDialogueUl(npcInventoryObjArray)
         currentQuestionIndex ++
     } else if (e.code === 'Enter' && trade && currentQuestionIndex == 3) {
-        console.log('EventListener() itemRequestedByUser selected; userInventoryItems________',userInventoryItems)
         tradeRequestData.itemRequestedByUser = getRadioInputValue()
         if (!tradeRequestData.itemRequestedByUser) {
             console.log("Tried to press enter before any input option selected")
@@ -320,6 +317,15 @@ function findDescriptionBasedOnItemNameInJson(itemNameToSearch, objArray) {
     return foundDescription
 }
 
+function findIdBasedOnItemNameInJson(itemNameToSearch, objArray) {
+    console.log("findIdBasedOnItemNameInJson() objArray",objArray)
+    // console.log("findDescriptionBasedOnItemNameInJson() itemNameToSearch and objArray_________",itemNameToSearch, objArray)
+    let foundItemObj = objArray.find(itemObj => itemObj.item.item_name === itemNameToSearch);
+    let foundId = foundItemObj.item.item_id
+    console.log("findIdBasedOnItemNameInJson() foundId",foundId)
+    return foundId
+}
+
 
 function createChatPromptFetchReqObj() {
     var role = npcDataObject.role
@@ -342,7 +348,6 @@ function createTradeRequestPromptFetchReqObj() {
     var itemOfferedByUser = tradeRequestData.itemOfferedByUser
     var itemRequestedByUser = tradeRequestData.itemRequestedByUser
 
-    console.log('createTradeRequestPromptFetchReqObj() userInventoryItems________',userInventoryItems)
     var userInventoryItemsStr = userInventoryItems.join(", ")
     var npcInventoryItemsStr = npcInventoryItems.join(", ")
     var descriptionOfItemOfferedByUser = findDescriptionBasedOnItemNameInJson(itemOfferedByUser, userInventoryObjArray)
@@ -358,14 +363,15 @@ function createTradeRequestPromptFetchReqObj() {
         itemRequestedByUser: itemRequestedByUser,
         descriptionOfItemOfferedByUser: descriptionOfItemOfferedByUser,
         descriptionOfItemRequestedByUser: descriptionOfItemRequestedByUser,
-        offerDecision: "decline"
+        offerDecision: tradeOfferDecision
     }
     return tradeReqPromptReqObj
 }
 
+
 async function processTradeOffer() {
-    //ToDo: fetchTradeOfferResponse(tradeRequestData)
-    console.log('processTradeOffer() userInventoryItems________',userInventoryItems)
+    tradeOfferDecision = await fetchTradeOfferResponse()
+    console.log("processTradeOffer() offerDecision________", tradeOfferDecision)
     var reqObj = await createTradeRequestPromptFetchReqObj()
     var prompt = createPromptForNpcResponseToTradeRequest(reqObj)
     var promptResponse = await fetchOpenAiApi(prompt)
@@ -391,17 +397,18 @@ function appendLiToDialogueUl(text) {
 //     return reqBody
 // }
 
-async function fetchTradeOfferResponse(reqBody) {
-    var responseToTradeOffer = await fetch('http://localhost:3001/api/trade/', {
-        method: 'POST',
+async function fetchTradeOfferResponse() {
+    var idOfitemOfferedByUser = findIdBasedOnItemNameInJson(tradeRequestData.itemOfferedByUser, userInventoryObjArray)
+    var idOfItemRequestedByUser = findIdBasedOnItemNameInJson(tradeRequestData.itemRequestedByUser, npcInventoryObjArray)
+    var responseToTradeOffer = await fetch(`http://localhost:3001/api/gamedata/trade/${idOfItemRequestedByUser}/${idOfitemOfferedByUser}`, {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            reqBody: reqBody
-        }),
+        }
     })
-    var promptResponse = await promptResponseNotJson.json();
-    return promptResponse
+    var offerDecisionObj = await responseToTradeOffer.json()
+    var offerDecision = offerDecisionObj.offerDecision
+    console.log("fetchTradeOfferResponse() offerDecision________", offerDecision)
+    return offerDecision
 }
 
