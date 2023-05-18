@@ -2,22 +2,11 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const backgroundImage = new Image();
-backgroundImage.src = './images/MapProjectZoomedPng.png';
+backgroundImage.src = './images/MapProjectZoomedPng1.png';
 canvas.width = 1024;
 canvas.height = 576;
 let interactionObject = []
-// gsap.to("#myImage", { duration: 1, opacity: 1 });
 
-
-// setTimeout(function() {
-//   gsap.to("#myImage", { duration: 1, opacity: 0 });
-// }, 5000);
-
-// gsap.to('#overlapping', {
-//     opacity: 1,
-//     repeat: 7,
-//     yoyo: true,
-// })
 
 let colArrMap = []
 for (let i = 0; i < colArr.length; i += 60) {
@@ -34,19 +23,19 @@ colArrMap.forEach((row, j) => {
             boundaries.push(
                 new Boundary({
                     position: {
-                        value: this.symbol, 
-                        x: k * Boundary.width + offsetBoundary.x,  
+                        value: this.symbol,
+                        x: k * Boundary.width + offsetBoundary.x,
                         y: j * Boundary.height + offsetBoundary.y
                     }
                 }))
     })
 });
-const interactionZoneMap = [] 
+const interactionZoneMap = []
 for (let i = 0; i < interactionArrData.length; i += 60) {
     interactionZoneMap
-.push(interactionArrData.slice(i, 60 + i)) 
+        .push(interactionArrData.slice(i, 60 + i))
 }
-console.log(interactionZoneMap) //made an array of 60 arrays containing the interactions tiles
+//made an array of 60 arrays containing the interactions tiles
 
 const interactions = [];
 interactionZoneMap.forEach((row, j) => {
@@ -56,7 +45,7 @@ interactionZoneMap.forEach((row, j) => {
                 new Boundary({
                     position: {
                         value: symbol,
-                        x: k * Boundary.width + offsetBoundary.x,  
+                        x: k * Boundary.width + offsetBoundary.x,
                         y: j * Boundary.height + offsetBoundary.y
                     }
                 })
@@ -65,28 +54,29 @@ interactionZoneMap.forEach((row, j) => {
             interactions.push(
                 new Boundary({
                     position: {
-                        value: symbol, 
-                        x: k * Boundary.width + offsetBoundary.x,  
+                        value: symbol,
+                        x: k * Boundary.width + offsetBoundary.x,
                         y: j * Boundary.height + offsetBoundary.y
                     }
                 })
             );
-        }else if (symbol === 1010) {
+        } else if (symbol === 1010) {
             interactions.push(
                 new Boundary({
                     position: {
-                        value: symbol, 
-                        x: k * Boundary.width + offsetBoundary.x,  
+                        value: symbol,
+                        x: k * Boundary.width + offsetBoundary.x,
                         y: j * Boundary.height + offsetBoundary.y
                     }
                 })
-            );}
-         else if (symbol === 5050) {
+            );
+        }
+        else if (symbol === 5050) {
             interactions.push(
                 new Boundary({
                     position: {
-                        value: symbol, 
-                        x: k * Boundary.width + offsetBoundary.x,  
+                        value: symbol,
+                        x: k * Boundary.width + offsetBoundary.x,
                         y: j * Boundary.height + offsetBoundary.y
                     }
                 })
@@ -95,8 +85,8 @@ interactionZoneMap.forEach((row, j) => {
             interactions.push(
                 new Boundary({
                     position: {
-                        value: symbol, 
-                        x: k * Boundary.width + offsetBoundary.x,  
+                        value: symbol,
+                        x: k * Boundary.width + offsetBoundary.x,
                         y: j * Boundary.height + offsetBoundary.y
                     }
                 })
@@ -106,8 +96,19 @@ interactionZoneMap.forEach((row, j) => {
             interactions.push(
                 new Boundary({
                     position: {
-                        value: symbol, 
-                        x: k * Boundary.width + offsetBoundary.x,  
+                        value: symbol,
+                        x: k * Boundary.width + offsetBoundary.x,
+                        y: j * Boundary.height + offsetBoundary.y
+                    }
+                })
+            );
+        }
+        else if (symbol === 9090) {
+            interactions.push(
+                new Boundary({
+                    position: {
+                        value: symbol,
+                        x: k * Boundary.width + offsetBoundary.x,
                         y: j * Boundary.height + offsetBoundary.y
                     }
                 })
@@ -116,7 +117,7 @@ interactionZoneMap.forEach((row, j) => {
     });
 });
 
-console.log(interactions);
+console.log('interactions are working');
 
 //orients the canvas to size
 ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -214,9 +215,9 @@ function animate() {
     interactions.forEach(interaction => {
         interaction.draw();
     });
-    
- newDude.draw()
-foreground.draw()
+
+    newDude.draw()
+    foreground.draw()
     // if(spriteGuy.position.x + spriteGuy.width)
     //if statement for key actions to follow. !!!!! somewhere in movement there is a glitch that freezes right side obstacle interaction  
 
@@ -233,7 +234,7 @@ foreground.draw()
                 })
             ) {
                 if (interaction.position.value === 4750) {
-                
+
 
                     console.log("Interacting with Zara");
                     interactionObject = "zara-sparks"
@@ -252,12 +253,16 @@ foreground.draw()
                 } else if (interaction.position.value === 5050) {
                     console.log("Interacting with Violet");
                     interactionObject = "violet-meadows"
+                } else if (interaction.position.value === 9090) {
+                    console.log("interacting with the Ship");
+                    interactionObject = "Spaceship"
+                    //if barf has item(s) in inventory and spacebar is pressed then function EndGame()
                 }
                 break;
             }
         }
     }
-   
+
 
     let moving = false
     newDude.moving = false
@@ -283,7 +288,7 @@ foreground.draw()
                 moving = false   //making a break and movement stop so the map quits moving and js quits detecting for other boundaries because it keeps giving a false reading 
                 break
             }
-        } 
+        }
         if (moving)
             moveables.forEach(moveable => {
                 moveable.position.y += 3
@@ -310,9 +315,9 @@ foreground.draw()
                 moving = false
                 break
             }
-        }if (moving)
+        } if (moving)
             moveables.forEach(moveable => { moveable.position.x += 3 })
-    }else if (keys.s.pressed && lastkey === 's') {
+    } else if (keys.s.pressed && lastkey === 's') {
         moving = true
         newDude.moving = true
         newDude.image = newDude.sprites.down
@@ -336,7 +341,7 @@ foreground.draw()
             }
         } if (moving)
             moveables.forEach(moveable => { moveable.position.y -= 2 })
-    }else if (keys.d.pressed && lastkey === 'd') {
+    } else if (keys.d.pressed && lastkey === 'd') {
         moving = true
         newDude.moving = true
         newDude.image = newDude.sprites.right
@@ -358,8 +363,8 @@ foreground.draw()
                 moving = false
                 break
             }
-        }if (moving)
-        moveables.forEach(moveable => { moveable.position.x -= 3 })
+        } if (moving)
+            moveables.forEach(moveable => { moveable.position.x -= 3 })
     }
 }
 //listen for the keydown 
@@ -401,7 +406,7 @@ window.addEventListener('keyup', (e) => {
         case 'd':
             keys.d.pressed = false
             break
-    } 
+    }
 })
 
 // window.addEventListener('keydown', function (event) {
@@ -422,23 +427,88 @@ function animateTheIntroZoom() {
 
     // Add animation for #intro element
     tl.to("#infoButton", {
-      opacity: 0,
-      duration: 1
+        opacity: 0,
+        duration: 1
     });
 
     // Add animation for #startGame element
     tl.to("#startGame", {
-      opacity: 0,
-      duration: 1
+        opacity: 0,
+        duration: 1
     });
 
     // Add animation for #handheldNintendo element
     tl.to("#handheldNintendo", {
-      duration: 3,
-      scale: 3,
-      opacity: 0,
-      onComplete: function() {
-        window.location.href = "/game";
-      }
+        duration: 3,
+        scale: 3,
+        opacity: 0,
+        onComplete: function () {
+            window.location.href = "/game";
+        }
     });
+}
+function animateTheIntroZoom() {
+    var tl = gsap.to("#handheldNintendoContainer", {
+        duration: 3,
+        scale: 3,
+        opacity: .3,
+        onComplete: function () {
+            window.location.href = "/game";
+        }
+    });
+}
+//i know this looks like a mess but i spent at least an hour trying to get this to run every other way.  
+
+
+const images = document.querySelectorAll('.image-container');
+const numImages = images.length;
+
+
+gsap.set(images, { opacity: 0 });
+
+function preloadImages() {
+    let loadedImages = 0;
+
+    for (let i = 0; i < numImages; i++) {
+        const img = new Image();
+        img.onload = function () {
+            loadedImages++;
+            if (loadedImages === numImages) {
+
+            }
+        };
+        img.src = images[i].querySelector('img').src;
+    }
+}
+preloadImages()
+function showNextImage() {
+    const currentImage = images[0];
+    const nextImage = images[1];
+
+    gsap.set(currentImage, { opacity: 0 });
+    gsap.set(nextImage, { opacity: 1 });
+
+    images[0] = nextImage;
+    images[1] = currentImage;
+
+    startSlideshow();
+}
+function startSlideshow() {
+    gsap.set('#gameCanvas', { opacity: 1});
+    gsap.to('#gameCanvas', { duration: 1, Opacity: 0 })
+    gsap.set(images[0], { opacity: 0 });
+    gsap.to(images[0], { duration: 1.5, opacity: 1, delay: 1.8, onComplete: fadeOutFirstImage });
   }
+  
+  function fadeOutFirstImage() {
+    gsap.to(images[0], { duration: 1.5, opacity: 0, delay: 2, onComplete: fadeInSecondImage });
+  }
+  
+  function fadeInSecondImage() {
+    gsap.set(images[1], { opacity: 0 });
+    gsap.to(images[1], { duration: 1.5, opacity: 1 });
+  }
+function endGame() {
+    startSlideshow();
+}
+//endGame()

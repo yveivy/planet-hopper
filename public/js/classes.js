@@ -49,7 +49,7 @@ class Boundary {
       this.height = 64
   }
   draw() {
-      ctx.fillStyle = 'rgba(255, 0, 0, 0.5)' //this makes the boundaries invisible  
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.0)' //this makes the boundaries invisible  
       ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
   }
 }
