@@ -226,22 +226,22 @@ foreground.draw()
                 
 
                     console.log("Interacting with Zara");
-                    interactionObject = "1"
+                    interactionObject = "zara-sparks"
                 } else if (interaction.position.value === 6060) {
                     console.log("Interacting with Beryl and Basil Hydra");
-                    interactionObject = "2"
+                    interactionObject = "beryl-and-basil-hydra"
                 } else if (interaction.position.value === 3030) {
                     console.log("Interacting with Abe");
-                    interactionObject = "3"
+                    interactionObject = "abe-harmony"
                 } else if (interaction.position.value === 2020) {
                     console.log("Interacting with Sketchy Schemer");
-                    interactionObject = "4"
+                    interactionObject = "shady-schemer"
                 } else if (interaction.position.value === 1010) {
                     console.log("Interacting with Taylor");
-                    interactionObject = "5"
+                    interactionObject = "taylor-tuck"
                 } else if (interaction.position.value === 5050) {
                     console.log("Interacting with Violet");
-                    interactionObject = "6"
+                    interactionObject = "violet-meadows"
                 }
                 break;
             }
