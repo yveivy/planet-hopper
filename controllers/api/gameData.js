@@ -30,7 +30,7 @@ router.put('/trade/:item1/:item2', async (req, res) => {
             await originalItem1.update({ item_id: item2 });
             await originalItem2.update({ item_id: item1 });
 
-            return res.status(200).json({ message: 'Items exchanged successfully' });
+            return res.status(200).json({ offerDecision: 'accept' });
         } 
 
         if (
@@ -44,7 +44,7 @@ router.put('/trade/:item1/:item2', async (req, res) => {
             await originalItem1.update({ item_id: item2 });
             await originalItem2.update({ item_id: item1 });
 
-            return res.status(200).json({ message: 'Items exchanged successfully' });
+            return res.status(200).json({ offerDecision: 'accept' });
         }
 
         if (
@@ -58,7 +58,7 @@ router.put('/trade/:item1/:item2', async (req, res) => {
             await originalItem1.update({ item_id: item2 });
             await originalItem2.update({ item_id: item1 });
 
-            return res.status(200).json({ message: 'Items exchanged successfully' });
+            return res.status(200).json({ offerDecision: "accept" });
         }
 
         if (
@@ -72,7 +72,7 @@ router.put('/trade/:item1/:item2', async (req, res) => {
             await originalItem1.update({ item_id: item2 });
             await originalItem2.update({ item_id: item1 });
 
-            return res.status(200).json({ message: 'Items exchanged successfully' });
+            return res.status(200).json({ offerDecision: "accept" });
         } 
 
         if (
@@ -86,10 +86,10 @@ router.put('/trade/:item1/:item2', async (req, res) => {
             await originalItem1.update({ item_id: item2 });
             await originalItem2.update({ item_id: item1 });
 
-            return res.status(200).json({ message: 'Items exchanged successfully' });
+            return res.status(200).json({ offerDecision: "accept" });
         } 
         // No valid trade condition matched, so no trade is allowed
-        return res.status(400).json({ message: 'Sorry, no trade!' });
+        return res.status(200).json({ offerDecision: "decline" });
 
     } catch (error) {
         console.error(error);
@@ -114,7 +114,7 @@ router.get('/inventory/:character', async (req, res) => {
 
                 {
                     model: Items,
-                    attributes: { exclude: ['item_id', 'searchable_item'] }
+                    attributes: { exclude: ['searchable_item'] }
 
                 },
             ],
