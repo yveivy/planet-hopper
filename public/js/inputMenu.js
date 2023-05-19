@@ -212,24 +212,15 @@ async function retrieveInventoryData() {
 
 // var nextBtn = document.getElementById('nextButton')
 window.addEventListener('keydown', async function(e) {
-    const hasEndGameItems = endGameItems.every(item => userInventory.includes(item))
+    const hasEndGameItems = endGameItems.every(item => userInventoryItems.includes(item))
     if (e.key === ' ' && currentQuestionIndex == 0) {
         disableWASD()  
-        if (interactionObject === 'Spaceship' && hasEndGameItems) {
-          
-            endGame()} else if(interactionObject === 'Spaceship' || interactionObject === ''){
-
-
-
-            return
-
-        } 
-
-
-    }
+            if (interactionObject === 'Spaceship' && hasEndGameItems) {
+                endGame()} else if(interactionObject === 'Spaceship' || interactionObject === ''){
+                return
+                }   
         retrieveInventoryData()
         npcDataObject = await fetchCharacterData(interactionObject)
-
         populateInteractionContainerWithNpcData(npcDataObject)
         showInteractionContainer()
         askEitherQuestionType(interactionModeQuestion)
