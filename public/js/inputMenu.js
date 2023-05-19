@@ -188,7 +188,7 @@ function populateInteractionContainerWithNpcData(npcDataObject) {
     npcBioContainer.innerHTML = `Bio:  ${npcDataObject.bio}`
 }
 
-const endGameItems = ['botanical elixir', 'aetheric spanner']
+const endGameItems = ['Botanical Elixir ', 'Aetheric Spanner']
 
 
 function parseInventoryObjArrayToGetJustItems(inventoryObjArray) {
@@ -212,14 +212,14 @@ async function retrieveInventoryData() {
 
 // var nextBtn = document.getElementById('nextButton')
 window.addEventListener('keydown', async function(e) {
+    retrieveInventoryData()
     const hasEndGameItems = endGameItems.every(item => userInventoryItems.includes(item))
-    if (e.key === ' ' && currentQuestionIndex == 0) {
+    if (e.key === ' ' && currentQuestionIndex == 0 && interactionObject!='') {
         disableWASD()  
             if (interactionObject === 'Spaceship' && hasEndGameItems) {
                 endGame()} else if(interactionObject === 'Spaceship' || interactionObject === ''){
                 return
                 }   
-        retrieveInventoryData()
         npcDataObject = await fetchCharacterData(interactionObject)
         populateInteractionContainerWithNpcData(npcDataObject)
         showInteractionContainer()
@@ -271,6 +271,7 @@ window.addEventListener('keydown', async function(e) {
     } else if (e.code === 'Escape' && currentQuestionIndex > 0) {
         finishInteraction()
 
+        console.log("eventListener enableWASD()__________")
         enableWASD()
     }
 });
@@ -403,7 +404,7 @@ function appendLiToDialogueUl(text) {
 async function fetchTradeOfferResponse() {
     var idOfitemOfferedByUser = findIdBasedOnItemNameInJson(tradeRequestData.itemOfferedByUser, userInventoryObjArray)
     var idOfItemRequestedByUser = findIdBasedOnItemNameInJson(tradeRequestData.itemRequestedByUser, npcInventoryObjArray)
-    var responseToTradeOffer = await fetch(`http://localhost:3001/api/gamedata/trade/${idOfItemRequestedByUser}/${idOfitemOfferedByUser}`, {
+    var responseToTradeOffer = await fetch(`/api/gamedata/trade/${idOfItemRequestedByUser}/${idOfitemOfferedByUser}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -414,4 +415,3 @@ async function fetchTradeOfferResponse() {
     console.log("fetchTradeOfferResponse() offerDecision________", offerDecision)
     return offerDecision
 }
-
