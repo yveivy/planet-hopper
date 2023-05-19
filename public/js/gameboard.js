@@ -6,6 +6,7 @@ backgroundImage.src = './images/MapProjectZoomedPng1.png';
 canvas.width = 1024;
 canvas.height = 576;
 let interactionObject = []
+let WASDenabled = true;
 
 
 let colArrMap = []
@@ -374,6 +375,7 @@ function animate() {
 //listen for the keydown 
 let lastkey = ''
 window.addEventListener('keydown', (e) => {
+    if (!WASDenabled) return
     // console.log('e.key') //logging the keydown event
     switch (e.key) {  //switch case for keydown 
         case 'w':

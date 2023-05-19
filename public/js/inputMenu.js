@@ -1,21 +1,25 @@
 import { fetchOpenAiApi, createPromptForNpcResponseToTradeRequest, createPromptForNpcResponseToChat } from './ai.js';
 
 
-var userInventory = ['duct tape', 'rusty knife', 'hair gel']
-var inventoryOfThisNpc = ['wrench', 'screws', 'shoelace']
-
-const interactionModeQuestion = { type: "radio", text: "", choices: ["Barter", "Chat"], when: true }
-const offerQuestion = { type: "radio", text: "Make an offer to trade your:", choices: [...userInventory], when: barter}
-const receiveQuestion = { type: "radio", text: "To get in return:", choices: [...inventoryOfThisNpc], when: barter}
-const chatQuestion = { type: "input", text: "Type to chat", when: chat }
-
-var barter = false
+// var userInventory = ['duct tape', 'rusty knife', 'hair gel']
+// var inventoryOfThisNpc = ['wrench', 'screws', 'shoelace']
+var trade = false
 var chat = false
 var currentQuestionIndex = 0;
 var dialogueList = []
 var tradeRequestData = {}
 var npcDataObject = {}
+var npcInventoryItems = []
+var npcInventoryObjArray = []
+var userInventoryObjArray = []
+var userInventoryItems = []
 var chatInputValue;
+var tradeOfferDecision;
+
+const interactionModeQuestion = { type: "radio", text: "", choices: ["Trade", "Chat"], when: true }
+const offerQuestion = { type: "radio", text: "Offer to trade your:", choices: [...userInventoryItems], when: trade}
+const receiveQuestion = { type: "radio", text: "In exchange for:", choices: [...npcInventoryItems], when: trade}
+const chatQuestion = { type: "input", text: "Type to chat", when: chat }
 
 
 var interactionContainer = document.getElementById('interactionContainer');
@@ -101,6 +105,14 @@ function createQuestionText(currentQuestion) {
     return questionText
 }
 
+function disableWASD() {
+    WASDenabled = false;
+}
+
+function enableWASD() {
+    WASDenabled = true
+}
+
 function showInteractionContainer() {
     interactionContainer.style.display = 'flex';
 }
@@ -111,11 +123,15 @@ function hideInteractionContainer() {
 
 function finishInteraction() {
     currentQuestionIndex = 0
-    barter = false
+    trade = false
     chat = false
     dialogueList = []
     tradeRequestData = {}
     npcDataObject = {}
+    npcInventoryItems = []
+    npcInventoryObjArray = []
+    userInventoryObjArray = []
+    userInventoryItems = []
     chatInputValue = ''
     interactionObject = ''
 
@@ -125,25 +141,37 @@ function finishInteraction() {
 }
 
 function setInteractionModeFlag(interactionMode) {
-    if (interactionMode == 'Barter') {
-        barter = true
-        console.log("setInteractionModeFlag barter___________", barter)
+    if (interactionMode == 'Trade') {
+        trade = true
     } else if (interactionMode == 'Chat') {
         chat = true
-        console.log("setInteractionModeFlag chat___________", chat)
     } else {
         console.log("Error in getting input value of first question")
     }
 }
 
-async function fetchNpcData(npcSearchableName) {
+async function fetchInventory(characterSearchableName) {
     try {
-        const response = await fetch(`/api/gamedata/biography/${npcSearchableName}`);
+        const response = await fetch(`/api/gamedata/inventory/${characterSearchableName}`);
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
+        const inventory = await response.json();
+        return inventory;
+    } catch (e) {
+        console.log('There was a problem with your fetch operation: ' + e.message);
+    }
+}
+
+async function fetchCharacterData(characterSearchableName) {
+    try {
+        const response = await fetch(`/api/gamedata/biography/${characterSearchableName}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const npcData = await response.json();
         return npcData;
     } catch (e) {
@@ -159,22 +187,49 @@ function populateInteractionContainerWithNpcData(npcDataObject) {
     npcHeadshotContainer.style.backgroundImage = `url('../images/characterHeadshots/${npcDataObject.searchable_name}.png')`
     npcBioContainer.innerHTML = `Bio:  ${npcDataObject.bio}`
 }
+
 const endGameItems = ['botanical elixir', 'aetheric spanner']
+
+
+function parseInventoryObjArrayToGetJustItems(inventoryObjArray) {
+    var inventoryItems = []
+    for (var item of inventoryObjArray) {
+        var name = item.item.item_name
+        inventoryItems.push(name)
+    }
+    return inventoryItems
+}
+
+async function retrieveInventoryData() {
+    npcInventoryObjArray = await fetchInventory(interactionObject)
+    userInventoryObjArray = await fetchInventory('barf')
+    npcInventoryItems = parseInventoryObjArrayToGetJustItems(npcInventoryObjArray)
+    receiveQuestion.choices = [...npcInventoryItems]
+    userInventoryItems = parseInventoryObjArrayToGetJustItems(userInventoryObjArray)
+    offerQuestion.choices = [...userInventoryItems]
+}
+
+
 // var nextBtn = document.getElementById('nextButton')
 window.addEventListener('keydown', async function(e) {
     const hasEndGameItems = endGameItems.every(item => userInventory.includes(item))
     if (e.key === ' ' && currentQuestionIndex == 0) {
+        disableWASD()  
         if (interactionObject === 'Spaceship' && hasEndGameItems) {
-            
+          
             endGame()} else if(interactionObject === 'Spaceship' || interactionObject === ''){
 
 
 
-
             return
+
         } 
-            console.log('resuming normal check')
-        npcDataObject = await fetchNpcData(interactionObject)
+
+
+    }
+        retrieveInventoryData()
+        npcDataObject = await fetchCharacterData(interactionObject)
+
         populateInteractionContainerWithNpcData(npcDataObject)
         showInteractionContainer()
         askEitherQuestionType(interactionModeQuestion)
@@ -186,8 +241,10 @@ window.addEventListener('keydown', async function(e) {
             return
         }
         setInteractionModeFlag(interactionModeInputValue)
-        if (barter) {
+        if (trade) {
+            console.log('EventListener() trade chosen; userInventoryItems________',userInventoryItems)
             askEitherQuestionType(offerQuestion)
+            renderInventoryItemDetailsInDialogueUl(userInventoryObjArray)
         } else if (chat) {
             askEitherQuestionType(chatQuestion)
         }
@@ -201,38 +258,53 @@ window.addEventListener('keydown', async function(e) {
         dialogueList.push(`User: "${chatInputValue}"`)
         currentQuestionIndex ++
         processChatMessage(chatInputValue)
-    } else if (e.code === 'Enter' && barter && currentQuestionIndex == 2) {
+    } else if (e.code === 'Enter' && trade && currentQuestionIndex == 2) {
         tradeRequestData.itemOfferedByUser = getRadioInputValue()
         if (!tradeRequestData.itemOfferedByUser) {
             console.log("Tried to press enter before any input option selected")
             return
         }
-        console.log("tradeRequestData.itemOfferedByUser________",tradeRequestData.itemOfferedByUser)
         askEitherQuestionType(receiveQuestion)
+        clearDialogueUl()
+        renderInventoryItemDetailsInDialogueUl(npcInventoryObjArray)
         currentQuestionIndex ++
-    } else if (e.code === 'Enter' && barter && currentQuestionIndex == 3) {
+    } else if (e.code === 'Enter' && trade && currentQuestionIndex == 3) {
         tradeRequestData.itemRequestedByUser = getRadioInputValue()
         if (!tradeRequestData.itemRequestedByUser) {
             console.log("Tried to press enter before any input option selected")
             return
         }
         currentQuestionIndex ++ 
+        clearDialogueUl()
         processTradeOffer()
     } else if (e.code === 'Escape' && currentQuestionIndex > 0) {
         finishInteraction()
-    } 
-}
-);
+
+        enableWASD()
+    }
+});
+
 
 function removeAnythingOutsideOfQuotes(unformattedStr) {
     let str = unformattedStr.match(/"(.*?)"/g).map(item => item.slice(1, -1));
     return str 
 }
 
+function renderInventoryItemDetailsInDialogueUl(inventory) {
+    for (var item of inventory) {
+        var name = item.item.item_name
+        var description = item.item.description
+
+        appendLiToDialogueUl(`Item name: ${name}`)
+        appendLiToDialogueUl(`Description: ${description}`)
+        appendLiToDialogueUl("&nbsp;")
+    }
+}
+
 async function processChatMessage() {
     clearDialogueUl()
     clearChatInput()
-    var reqObj = createChatPromptReqObj()
+    var reqObj = createChatPromptFetchReqObj()
     var prompt = createPromptForNpcResponseToChat(reqObj)
     var unformattedPromptResponse = await fetchOpenAiApi(prompt)
     var promptResponse = removeAnythingOutsideOfQuotes(unformattedPromptResponse)
@@ -240,7 +312,7 @@ async function processChatMessage() {
     dialogueList.push(npcText)
 
     for (let line of dialogueList) {
-        appendLiToDialogueBox(line)
+        appendLiToDialogueUl(line)
     }
 }
 
@@ -249,7 +321,25 @@ function formatDialogueListAsString() {
     return string
 }
 
-function createChatPromptReqObj() {
+function findDescriptionBasedOnItemNameInJson(itemNameToSearch, objArray) {
+    // console.log("findDescriptionBasedOnItemNameInJson() itemNameToSearch and objArray_________",itemNameToSearch, objArray)
+    let foundItemObj = objArray.find(itemObj => itemObj.item.item_name === itemNameToSearch);
+    let foundDescription = foundItemObj.item.description
+    console.log("findDescriptionBasedOnItemNameInJson() foundDescription",foundDescription)
+    return foundDescription
+}
+
+function findIdBasedOnItemNameInJson(itemNameToSearch, objArray) {
+    console.log("findIdBasedOnItemNameInJson() objArray",objArray)
+    // console.log("findDescriptionBasedOnItemNameInJson() itemNameToSearch and objArray_________",itemNameToSearch, objArray)
+    let foundItemObj = objArray.find(itemObj => itemObj.item.item_name === itemNameToSearch);
+    let foundId = foundItemObj.item.item_id
+    console.log("findIdBasedOnItemNameInJson() foundId",foundId)
+    return foundId
+}
+
+
+function createChatPromptFetchReqObj() {
     var role = npcDataObject.role
     var bio = npcDataObject.bio
     var mostRecentMessage = chatInputValue
@@ -264,19 +354,48 @@ function createChatPromptReqObj() {
     return chatPromptReqObj
 }
 
+function createTradeRequestPromptFetchReqObj() {
+    var role = npcDataObject.role
+    var bio = npcDataObject.bio
+    var itemOfferedByUser = tradeRequestData.itemOfferedByUser
+    var itemRequestedByUser = tradeRequestData.itemRequestedByUser
+
+    var userInventoryItemsStr = userInventoryItems.join(", ")
+    var npcInventoryItemsStr = npcInventoryItems.join(", ")
+    var descriptionOfItemOfferedByUser = findDescriptionBasedOnItemNameInJson(itemOfferedByUser, userInventoryObjArray)
+    var descriptionOfItemRequestedByUser = findDescriptionBasedOnItemNameInJson(itemRequestedByUser, npcInventoryObjArray)
+
+    var tradeReqPromptReqObj = {
+        role: role,
+        bio: bio,
+
+        npcInventoryItems: npcInventoryItemsStr,
+        userInventoryItems: userInventoryItemsStr,
+        itemOfferedByUser: itemOfferedByUser,
+        itemRequestedByUser: itemRequestedByUser,
+        descriptionOfItemOfferedByUser: descriptionOfItemOfferedByUser,
+        descriptionOfItemRequestedByUser: descriptionOfItemRequestedByUser,
+        offerDecision: tradeOfferDecision
+    }
+    return tradeReqPromptReqObj
+}
+
+
 async function processTradeOffer() {
-    //ToDo: fetchTradeOfferResponse(tradeRequestData)
-    var prompt = createPromptForNpcResponseToTradeRequest()
+    tradeOfferDecision = await fetchTradeOfferResponse()
+    console.log("processTradeOffer() offerDecision________", tradeOfferDecision)
+    var reqObj = await createTradeRequestPromptFetchReqObj()
+    var prompt = createPromptForNpcResponseToTradeRequest(reqObj)
     var promptResponse = await fetchOpenAiApi(prompt)
     var tradeSummary = `*User offers ${tradeRequestData.itemOfferedByUser} in exchange for ${tradeRequestData.itemRequestedByUser}.*`
     var dialogueText = `NPC: ${promptResponse}`
-    appendLiToDialogueBox(tradeSummary)
-    appendLiToDialogueBox(dialogueText)
+    appendLiToDialogueUl(tradeSummary)
+    appendLiToDialogueUl(dialogueText)
     clearUserInputContainer()
     // appendTradeOfferSummaryToUserInputContainer:
 }
 
-function appendLiToDialogueBox(text) {
+function appendLiToDialogueUl(text) {
     var li = document.createElement("li")
     li.innerHTML = text
     dialogueUl.appendChild(li)
@@ -290,17 +409,18 @@ function appendLiToDialogueBox(text) {
 //     return reqBody
 // }
 
-async function fetchTradeOfferResponse(reqBody) {
-    var responseToTradeOffer = await fetch('http://localhost:3001/api/trade/', {
-        method: 'POST',
+async function fetchTradeOfferResponse() {
+    var idOfitemOfferedByUser = findIdBasedOnItemNameInJson(tradeRequestData.itemOfferedByUser, userInventoryObjArray)
+    var idOfItemRequestedByUser = findIdBasedOnItemNameInJson(tradeRequestData.itemRequestedByUser, npcInventoryObjArray)
+    var responseToTradeOffer = await fetch(`http://localhost:3001/api/gamedata/trade/${idOfItemRequestedByUser}/${idOfitemOfferedByUser}`, {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            reqBody: reqBody
-        }),
+        }
     })
-    var promptResponse = await promptResponseNotJson.json();
-    return promptResponse
+    var offerDecisionObj = await responseToTradeOffer.json()
+    var offerDecision = offerDecisionObj.offerDecision
+    console.log("fetchTradeOfferResponse() offerDecision________", offerDecision)
+    return offerDecision
 }
 
