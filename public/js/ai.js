@@ -1,5 +1,5 @@
 export async function fetchOpenAiApi(prompt) {
-    var promptResponseNotJson = await fetch('http://localhost:3001/api/openai/', {
+    var promptResponseNotJson = await fetch('/api/openai/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

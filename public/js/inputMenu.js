@@ -400,7 +400,7 @@ function appendLiToDialogueUl(text) {
 async function fetchTradeOfferResponse() {
     var idOfitemOfferedByUser = findIdBasedOnItemNameInJson(tradeRequestData.itemOfferedByUser, userInventoryObjArray)
     var idOfItemRequestedByUser = findIdBasedOnItemNameInJson(tradeRequestData.itemRequestedByUser, npcInventoryObjArray)
-    var responseToTradeOffer = await fetch(`http://localhost:3001/api/gamedata/trade/${idOfItemRequestedByUser}/${idOfitemOfferedByUser}`, {
+    var responseToTradeOffer = await fetch(`/api/gamedata/trade/${idOfItemRequestedByUser}/${idOfitemOfferedByUser}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
