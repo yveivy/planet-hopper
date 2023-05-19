@@ -9,7 +9,7 @@
   "scripts": {
     "test": "jest",
     "start": "node server.js",
-    "seed": "node seeds/seed.js"
+    "seed": "node seeders/seedAll.js"
   },
   "keywords": [],
   "author": "",

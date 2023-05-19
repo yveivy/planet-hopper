@@ -1,3 +1,3 @@
-const seedAll = require('./path/to/your/seedAll/file');
+const seedAll = require('./seedAll.js');
 
 seedAll();
