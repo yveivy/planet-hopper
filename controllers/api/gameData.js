@@ -48,7 +48,7 @@ router.put('/trade/:item1/:item2', async (req, res) => {
         }
 
         if (
-            (item1 === '8' && (item2 === '12' || item2 === '13')) 
+            (item1 === '8' && item2 === '12') 
         ) {
             // Save original items first
             const originalItem1 = await Inventory.findOne({ where: { item_id: item1 } });
@@ -71,7 +71,6 @@ router.put('/trade/:item1/:item2', async (req, res) => {
             // Swap the items
             await originalItem1.update({ item_id: item2 });
             await originalItem2.update({ item_id: item1 });
-
             return res.status(200).json({ offerDecision: "accept" });
         }
 
