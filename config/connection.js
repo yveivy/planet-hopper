@@ -10,6 +10,11 @@ const sequelize = process.env.JAWSDB_URL
       dialectOptions: {
         decimalNumbers: true,
       },
+      pool: {
+        max: 5,
+        min: 0,
+        idle: 10000
+      }    
     });
     
 console.log(`Connected to the game_db database.`)

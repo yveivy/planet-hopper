@@ -10,6 +10,11 @@ module.exports = {
     dialectOptions: {
       decimalNumbers: true,
     },
+    pool: {
+      max: 5,
+      min: 0,
+      idle: 10000
+    }  
   },
   production: {
     use_env_variable: 'JAWSDB_URL',
