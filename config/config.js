@@ -11,7 +11,7 @@ module.exports = {
       decimalNumbers: true,
     },
     pool: {
-      max: 5,
+      max: 50,
       min: 0,
       idle: 10000
     }  
@@ -23,7 +23,7 @@ module.exports = {
       decimalNumbers: true,
     },
     pool: {
-      max: 5,
+      max: 50,
       min: 0,
       idle: 10000
     }  
