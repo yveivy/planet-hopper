@@ -133,7 +133,8 @@ function finishInteraction() {
     userInventoryObjArray = []
     userInventoryItems = []
     chatInputValue = ''
-    // interactionObject = false
+    interactionObject = ''
+
     clearDialogueUl()
     clearUserInputContainer()
     hideInteractionContainer()
@@ -187,6 +188,9 @@ function populateInteractionContainerWithNpcData(npcDataObject) {
     npcBioContainer.innerHTML = `Bio:  ${npcDataObject.bio}`
 }
 
+const endGameItems = ['botanical elixir', 'aetheric spanner']
+
+
 function parseInventoryObjArrayToGetJustItems(inventoryObjArray) {
     var inventoryItems = []
     for (var item of inventoryObjArray) {
@@ -205,21 +209,27 @@ async function retrieveInventoryData() {
     offerQuestion.choices = [...userInventoryItems]
 }
 
+
 // var nextBtn = document.getElementById('nextButton')
 window.addEventListener('keydown', async function(e) {
+    const hasEndGameItems = endGameItems.every(item => userInventory.includes(item))
     if (e.key === ' ' && currentQuestionIndex == 0) {
-        disableWASD()
-        if (interactionObject == 'spaceship') {
-            console.log("pressed spacebar while in the spaceship area === ")
+        disableWASD()  
+        if (interactionObject === 'Spaceship' && hasEndGameItems) {
+          
+            endGame()} else if(interactionObject === 'Spaceship' || interactionObject === ''){
+
 
 
             return
-        }
-        // if (!interactionObject) {
-        //     return
-        // }
+
+        } 
+
+
+    }
         retrieveInventoryData()
         npcDataObject = await fetchCharacterData(interactionObject)
+
         populateInteractionContainerWithNpcData(npcDataObject)
         showInteractionContainer()
         askEitherQuestionType(interactionModeQuestion)
@@ -269,9 +279,11 @@ window.addEventListener('keydown', async function(e) {
         processTradeOffer()
     } else if (e.code === 'Escape' && currentQuestionIndex > 0) {
         finishInteraction()
+
         enableWASD()
     }
 });
+
 
 function removeAnythingOutsideOfQuotes(unformattedStr) {
     let str = unformattedStr.match(/"(.*?)"/g).map(item => item.slice(1, -1));
