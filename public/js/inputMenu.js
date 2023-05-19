@@ -117,6 +117,8 @@ function finishInteraction() {
     tradeRequestData = {}
     npcDataObject = {}
     chatInputValue = ''
+    interactionObject = ''
+
     clearDialogueUl()
     clearUserInputContainer()
     hideInteractionContainer()
@@ -157,18 +159,21 @@ function populateInteractionContainerWithNpcData(npcDataObject) {
     npcHeadshotContainer.style.backgroundImage = `url('../images/characterHeadshots/${npcDataObject.searchable_name}.png')`
     npcBioContainer.innerHTML = `Bio:  ${npcDataObject.bio}`
 }
-
+const endGameItems = ['botanical elixir', 'aetheric spanner']
 // var nextBtn = document.getElementById('nextButton')
 window.addEventListener('keydown', async function(e) {
+    const hasEndGameItems = endGameItems.every(item => userInventory.includes(item))
     if (e.key === ' ' && currentQuestionIndex == 0) {
-        if (interactionObject == 'spaceship') {
-            console.log("pressed spacebar while in the spaceship area === ")
+        if (interactionObject === 'Spaceship' && hasEndGameItems) {
+            
+            endGame()} else if(interactionObject === 'Spaceship' || interactionObject === ''){
 
 
 
 
             return
-        }
+        } 
+            console.log('resuming normal check')
         npcDataObject = await fetchNpcData(interactionObject)
         populateInteractionContainerWithNpcData(npcDataObject)
         showInteractionContainer()
@@ -215,8 +220,9 @@ window.addEventListener('keydown', async function(e) {
         processTradeOffer()
     } else if (e.code === 'Escape' && currentQuestionIndex > 0) {
         finishInteraction()
-    }
-});
+    } 
+}
+);
 
 function removeAnythingOutsideOfQuotes(unformattedStr) {
     let str = unformattedStr.match(/"(.*?)"/g).map(item => item.slice(1, -1));

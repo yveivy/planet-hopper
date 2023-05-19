@@ -257,8 +257,12 @@ function animate() {
                     console.log("interacting with the Ship");
                     interactionObject = "Spaceship"
                     //if barf has item(s) in inventory and spacebar is pressed then function EndGame()
-                }
+                } 
+                
                 break;
+            } else{   //this is important to the interactions // 
+                interactionObject = ''   
+               
             }
         }
     }
