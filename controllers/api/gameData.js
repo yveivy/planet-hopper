@@ -67,6 +67,7 @@ router.put('/trade/:item1/:item2', async (req, res) => {
             // Save original items first
             const originalItem1 = await Inventory.findOne({ where: { item_id: item1 } });
             const originalItem2 = await Inventory.findOne({ where: { item_id: item2 } });
+
             // Swap the items
             await originalItem1.update({ item_id: item2 });
             await originalItem2.update({ item_id: item1 });
