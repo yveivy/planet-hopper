@@ -181,7 +181,7 @@ async function fetchCharacterData(characterSearchableName) {
 
 
 function populateInteractionContainerWithNpcData(npcDataObject) {
-    npcDataObject.searchable_name = 'placeholder' //!placeholder
+    npcDataObject.searchable_name = interactionObject
 
     npcNameEl.innerHTML = npcDataObject.full_name
     npcHeadshotContainer.style.backgroundImage = `url('../images/characterHeadshots/${npcDataObject.searchable_name}.png')`
