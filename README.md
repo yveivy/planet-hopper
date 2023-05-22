@@ -1,17 +1,16 @@
 # planet-hopper
+- Trade with unique AI-driven NPCs to collect essential parts, mend your spacecraft, and embark on the epic journey back home.With its ever-evolving dialogues, every play is a fresh experience. Pushing the boundaries of traditional gaming while paying homage to the classics. 
 
-# Planet-Hopper
-
-Project Description
+ ## Project Description
 
 ![alt text]({screencapture link})
 
 
 ## Features:
 
- -project
- -highlights
- -here
+- Ai Character interaction: interact with characters with ever evolving dialogue. 
+- Dynamic Trading: Trade with Ai characters to find the items you need to complete your quest.
+- Limitless Map: Traverse this strange planet with a map thats possibly too large. 
 
 ## Team Members:
 
