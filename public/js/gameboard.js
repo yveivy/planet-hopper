@@ -8,6 +8,8 @@ canvas.height = 576;
 let interactionObject = []
 let WASDenabled = true;
 
+const movementSpeedMultiplier = 6
+
 
 let colArrMap = []
 for (let i = 0; i < colArr.length; i += 60) {
@@ -284,7 +286,7 @@ function animate() {
                         ...boundary,
                         position: {
                             x: boundary.position.x,
-                            y: boundary.position.y + 3 //'predicting' that a boundary is about to get hit by using a 3pixel buffer
+                            y: boundary.position.y + movementSpeedMultiplier //'predicting' that a boundary is about to get hit by using a 3pixel buffer
                         }
                     }
                 })
@@ -296,7 +298,7 @@ function animate() {
         }
         if (moving)
             moveables.forEach(moveable => {
-                moveable.position.y += 3
+                moveable.position.y += movementSpeedMultiplier
             })
     } else if (keys.a.pressed && lastkey === 'a') {
         moving = true
@@ -310,7 +312,7 @@ function animate() {
                     rectangle2: {
                         ...boundary,
                         position: {
-                            x: boundary.position.x + 3,
+                            x: boundary.position.x + movementSpeedMultiplier,
                             y: boundary.position.y
                         }
                     }
@@ -321,7 +323,7 @@ function animate() {
                 break
             }
         } if (moving)
-            moveables.forEach(moveable => { moveable.position.x += 3 })
+            moveables.forEach(moveable => { moveable.position.x += movementSpeedMultiplier })
     } else if (keys.s.pressed && lastkey === 's') {
         moving = true
         newDude.moving = true
@@ -335,7 +337,7 @@ function animate() {
                         ...boundary,
                         position: {
                             x: boundary.position.x,
-                            y: boundary.position.y - 3
+                            y: boundary.position.y - movementSpeedMultiplier
                         }
                     }
                 })
@@ -345,7 +347,7 @@ function animate() {
                 break
             }
         } if (moving)
-            moveables.forEach(moveable => { moveable.position.y -= 2 })
+            moveables.forEach(moveable => { moveable.position.y -= movementSpeedMultiplier })
     } else if (keys.d.pressed && lastkey === 'd') {
         moving = true
         newDude.moving = true
@@ -358,7 +360,7 @@ function animate() {
                     rectangle2: {
                         ...boundary,
                         position: {
-                            x: boundary.position.x - 3,
+                            x: boundary.position.x - movementSpeedMultiplier,
                             y: boundary.position.y
                         }
                     }
@@ -369,7 +371,7 @@ function animate() {
                 break
             }
         } if (moving)
-            moveables.forEach(moveable => { moveable.position.x -= 3 })
+            moveables.forEach(moveable => { moveable.position.x -= movementSpeedMultiplier })
     }
 }
 //listen for the keydown 
