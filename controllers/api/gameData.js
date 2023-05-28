@@ -1,18 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { sequelize } = require('../../config/connection');
+const {resetInventoryData} = require("../../seeders/resetGameData.js")
 
 console.log(sequelize);
 const { Characters, Items, Inventory, Wishlist } = require('../../models');
-
-router.get('/test', (req, res) => {
-    res.send('Test get route is working');
-});
-
-router.put('/test', (req, res) => {
-    res.send('Test put route is working')
-})
-
 
 //this restricts trade for the specified game items that meet the games objective and doesn't allow trade of other items.
 router.put('/trade/:item1/:item2', async (req, res) => {
@@ -123,7 +115,6 @@ router.get('/inventory/:character', async (req, res) => {
                     where: { searchable_name: character },
                     attributes: { exclude: ['character_id', 'searchable_name', 'full_name', 'role', 'bio'] }
                 },
-
                 {
                     model: Items,
                     attributes: { exclude: ['searchable_item'] }
@@ -221,6 +212,17 @@ router.get('/items', async (req, res) => {
         });
 
         return res.status(200).json(items);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+router.post("/reset-inventory", async (req, res) => {
+    console.log("api/gamedata/reset-inventory________________________")
+    try {
+        await resetInventoryData()
+        return res.status(200)
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'Internal server error' });

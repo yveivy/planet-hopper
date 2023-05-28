@@ -8,7 +8,9 @@ export async function fetchOpenAiApi(prompt) {
             prompt: prompt,
         }),
     })
+
     var promptResponse = await promptResponseNotJson.json();
+    console.log("fetchOpenAiApi() promptResponse___________", promptResponse)
     return promptResponse
 }
 

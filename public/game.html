@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./css/style.css"></link>
+  <link rel="stylesheet" href="./css/game.css"></link>
 </head>
 
 <body>
@@ -27,7 +27,6 @@
       </div>
     
 
-      <!-- <div id="inventoryContainer"></div> -->
       <div id="interactionContainer">
           <div id="userInputAndDialogueContainer">
             <div id='userInputContainer'></div>
@@ -45,7 +44,13 @@
             <div id="npcBioContainer">
             </div>
           </div>            
+      </div>
+      
+      <div id="inventory-container">
+        <h3 id="inventory-header">Your Inventory</h3>
+        <ul id="inventory-ul"></ul>
       </div>  
+
     </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"
@@ -56,6 +61,7 @@
 <script src="js/collisions1.js"></script>
 <script src="js/gameboard.js"></script>
 <script type="module" src="js/ai.js"></script>
-<script type="module" src="js/inputMenu.js"></script>
+<script type="module" src="js/interactionMenu.js"></script>
+<script type="module" src="js/inventory.js"></script>
 </body>
 </html>

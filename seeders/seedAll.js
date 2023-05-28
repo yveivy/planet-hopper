@@ -12,11 +12,8 @@ const seedAll = async () => {
   console.log('\n----- CHARACTERS SEEDED -----\n');
   await seedItems();
   console.log('\n----- ITEMS SEEDED -----\n');
-  await seedWishlist();
-  console.log('\n----- WISHLIST SEEDED -----\n');
   await seedInventory();
   console.log('\n----- INVENTORY SEEDED -----\n');
-
 
   process.exit(0);
 }
